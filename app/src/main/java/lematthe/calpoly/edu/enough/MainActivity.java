@@ -1,9 +1,13 @@
 package lematthe.calpoly.edu.enough;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
@@ -17,14 +21,14 @@ public class MainActivity extends AppCompatActivity {
     //declare globally, this can be any int
     public final int PICK_CONTACT = 2015;
     String contact1;
-
+    Button sendButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         Button myContact1 = (Button) findViewById(R.id.contact1);
-        Button sendButton = (Button) findViewById(R.id.send);
+        sendButton = (Button) findViewById(R.id.send);
 
         myContact1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,9 +40,26 @@ public class MainActivity extends AppCompatActivity {
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                sendSMSMessage();
+                SmsManager smsManager = SmsManager.getDefault();
+                smsManager.sendTextMessage(
+                        "5556",
+                        null,
+                        "Hola",
+                        null,
+                        null);
             }
+
         });
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.SEND_SMS)
+                != PackageManager.PERMISSION_GRANTED) {
+            Log.d("PLAYGROUND", "Permission is not granted, requesting");
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, 123);
+            sendButton.setEnabled(false);
+        } else {
+            Log.d("PLAYGROUND", "Permission is granted");
+        }
 
     }
 
@@ -54,19 +75,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    protected void sendSMSMessage() {
-        Log.i("Send SMS", "");
-        String message = "hola testing";
-
-        try {
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage("5556", null, message, null, null);
-            Toast.makeText(getApplicationContext(), "SMS sent.", Toast.LENGTH_LONG).show();
-        }
-
-        catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "SMS faild, please try again.", Toast.LENGTH_LONG).show();
-            e.printStackTrace();
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 123) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d("PLAYGROUND", "Permission has been granted");
+                sendButton.setEnabled(true);
+            } else {
+                Log.d("PLAYGROUND", "Permission has been denied or request cancelled");
+                sendButton.setEnabled(false);
+            }
         }
     }
+
 }

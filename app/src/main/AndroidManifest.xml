@@ -3,6 +3,9 @@
     package="lematthe.calpoly.edu.enough">
     <uses-permission android:name="android.permission.SEND_SMS"/>
 
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="19"/>
 
     <application
         android:allowBackup="true"
