@@ -19,9 +19,13 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     //declare globally, this can be any int
+    public final int MY_LOCATION_REQUEST = 456;
+    public final int MY_SMS_REQUEST = 123;
     public final int PICK_CONTACT = 2015;
     String contact1;
     Button sendButton;
+    Button locationButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
 
         Button myContact1 = (Button) findViewById(R.id.contact1);
         sendButton = (Button) findViewById(R.id.send);
+
+        locationButton = (Button) findViewById(R.id.location);
 
         myContact1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,8 +61,29 @@ public class MainActivity extends AppCompatActivity {
                 Manifest.permission.SEND_SMS)
                 != PackageManager.PERMISSION_GRANTED) {
             Log.d("PLAYGROUND", "Permission is not granted, requesting");
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, 123);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, MY_SMS_REQUEST);
             sendButton.setEnabled(false);
+        } else {
+            Log.d("PLAYGROUND", "Permission is granted");
+        }
+
+        locationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getLocation();
+            }
+        });
+
+
+    }
+
+    public void getLocation() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            Log.d("PLAYGROUND", "Permission is not granted, requesting");
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_LOCATION_REQUEST);
+            locationButton.setEnabled(false);
         } else {
             Log.d("PLAYGROUND", "Permission is granted");
         }
@@ -77,14 +104,30 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == 123) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Log.d("PLAYGROUND", "Permission has been granted");
-                sendButton.setEnabled(true);
-            } else {
-                Log.d("PLAYGROUND", "Permission has been denied or request cancelled");
-                sendButton.setEnabled(false);
+
+        switch (requestCode) {
+            case MY_LOCATION_REQUEST: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("PLAYGROUND", "Permission has been granted");
+                    locationButton.setEnabled(true);
+                } else {
+                    Log.d("PLAYGROUND", "Permission has been denied or request cancelled");
+                    locationButton.setEnabled(false);
+                }
+                return;
             }
+            case MY_SMS_REQUEST: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("PLAYGROUND", "Permission has been granted");
+                    sendButton.setEnabled(true);
+                } else {
+                    Log.d("PLAYGROUND", "Permission has been denied or request cancelled");
+                    sendButton.setEnabled(false);
+                }
+            }
+
         }
     }
 
