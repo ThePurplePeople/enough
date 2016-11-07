@@ -4,4 +4,5 @@
     <string name="sendmessage">Send Message</string>
     <string name="template_message_1">This is a test template message1</string>
     <string name="template_message_2">This is a test template message2</string>
+    <string name="locationCheck">location</string>
 </resources>
