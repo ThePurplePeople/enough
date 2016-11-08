@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
@@ -23,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class MainActivity extends AppCompatActivity {
 
     //declare globally, this can be any int
@@ -31,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     public DatabaseHelper dbHelper; // The database helper(manager)
     public final int PERMISSION_ALL = 1;
     public final int LOCATION_PERM = 2;
-    String contact1;
+
     String TAG = "here";
     Button sendButton;
     Button locationButton;
@@ -59,23 +57,24 @@ public class MainActivity extends AppCompatActivity {
         });
 
         if(checkAndRequestPermissions()) {
-
-            sendButton.setEnabled(false);
+            sendButton.setEnabled(true);
             locationButton.setEnabled(false);
-
         }
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                SmsManager smsManager = SmsManager.getDefault();
-                smsManager.sendTextMessage(
-                        "5556",
-                        null,
-                        "Hola",
-                        null,
-                        null);
+                System.out.println("Send clicked");
+                ArrayList<String> numbers = dbHelper.sendEmergency();
+                for(String n : numbers) {
+                    SmsManager smsManager = SmsManager.getDefault();
+                    smsManager.sendTextMessage(
+                            "+1" + n,
+                            null,
+                            "This is a test message!",
+                            null,
+                            null);
+                    }
             }
-
         });
 
         locationButton.setOnClickListener(new View.OnClickListener() {
@@ -89,8 +88,10 @@ public class MainActivity extends AppCompatActivity {
     private  boolean checkAndRequestPermissions() {
         int permissionSendMessage = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.SEND_SMS);
+
         int locationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         List<String> listPermissionsNeeded = new ArrayList<>();
+
         if (locationPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION);
         }
@@ -103,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

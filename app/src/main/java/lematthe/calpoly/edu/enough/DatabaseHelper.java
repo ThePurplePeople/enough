@@ -3,9 +3,10 @@ package lematthe.calpoly.edu.enough;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
+import java.util.ArrayList;
 /**
  * Created by alexye on 10/29/16.
  */
@@ -73,6 +74,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         contact.put(DatabaseContract.EmergencyContacts.COLUMN_NAME_NUMBER, number);
         db.insert(DatabaseContract.EmergencyContacts.TABLE_NAME, null, contact);
+    }
+
+    /**
+     * Returns all emergency contacts stored in list.
+     * @return ArrayList containing phone numbers sans country code
+     */
+    public ArrayList<String> sendEmergency() {
+        SQLiteDatabase db = getReadableDatabase();
+        String select = "SELECT number FROM EmergencyContacts";
+        System.out.println(select);
+        ArrayList<String> numbers = new ArrayList<String>();
+
+        try {
+            Cursor cursor = db.rawQuery(select, null);
+            try {
+
+                // looping through all rows and adding to list
+                if (cursor.moveToFirst()) {
+                    do {
+                        numbers.add(cursor.getString(0));
+                    } while (cursor.moveToNext());
+                }
+
+            } finally {
+                try { cursor.close(); } catch (Exception ignore) {}
+            }
+        } finally {
+            try { db.close(); } catch (Exception ignore) {}
+        }
+        return numbers;
     }
 
 }
