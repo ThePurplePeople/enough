@@ -1,6 +1,7 @@
 package lematthe.calpoly.edu.enough;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,7 +13,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -33,35 +33,88 @@ public class MainActivity extends AppCompatActivity {
     String TAG = "here";
     Button sendButton;
     Button locationButton;
+    Button myContact1;
+    Button myContact2;
+    Button myContact3;
+    String clickedButton;
+    Button selectM;
+    Button saveButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //implicit layout inflator
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.setting_fields);
 
         // carry on the normal flow, as the case of  permissions  granted.
-        Button myContact1 = (Button) findViewById(R.id.contact1);
-        sendButton = (Button) findViewById(R.id.send);
+        //find contact buttons
+
+        if (savedInstanceState!=null) {
+            Log.d("ALEX databse", "set the contact buttons with name and number");
+        }
+        myContact1 = (Button) findViewById(R.id.contact1);
+        myContact2 = (Button) findViewById(R.id.contact2);
+        myContact3 = (Button) findViewById(R.id.contact3);
+        selectM = (Button) findViewById(R.id.selectmessage);
+
+        //send button here for now to show functionality
+        sendButton = (Button) findViewById(R.id.save);
 
         dbHelper = new DatabaseHelper(getApplicationContext());
-
-        locationButton = (Button) findViewById(R.id.location);
+        saveButton = (Button) findViewById(R.id.save);
+        //locationButton = (Button) findViewById(R.id.location);
 
         myContact1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
-                startActivityForResult(i, PICK_CONTACT);
+                contactClicked();
+                clickedButton = "myContact1";
+            }
+        });
+
+        myContact2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                contactClicked();
+                clickedButton = "myContact2";
+
+            }
+        });
+
+        myContact3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                contactClicked();
+                clickedButton = "myContact3";
+
+            }
+        });
+
+        selectM.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context context = v.getContext();
+                Intent intent = new Intent(context, MessageDetailActivity.class);
+                intent.putExtra("hi", "hi");
+                context.startActivity(intent);
             }
         });
 
         if(checkAndRequestPermissions()) {
-            sendButton.setEnabled(true);
-            locationButton.setEnabled(false);
+            saveButton.setEnabled(true);
         }
 
-        sendButton.setOnClickListener(new View.OnClickListener() {
+        //check if all of the necessary fields are filled
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("ALEX database: ", "check if the fields are all filled if YES then save");
+                Log.d("if not filled", "we need to not let the activitiy finish");
+            }
+        });
+
+        //Sending a Text functionality implement in widget
+        /*sendButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 System.out.println("Send clicked");
                 ArrayList<String> numbers = dbHelper.sendEmergency();
@@ -75,15 +128,24 @@ public class MainActivity extends AppCompatActivity {
                             null);
                     }
             }
-        });
+        });*/
 
-        locationButton.setOnClickListener(new View.OnClickListener() {
+        /*locationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("clicked", "get location");
             }
-        });
+        });*/
+
     }
+
+
+
+    public void contactClicked(){
+        Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+        startActivityForResult(i, PICK_CONTACT);
+    }
+
 
     private  boolean checkAndRequestPermissions() {
         int permissionSendMessage = ContextCompat.checkSelfPermission(this,
@@ -108,13 +170,42 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_CONTACT && resultCode == RESULT_OK) {
+            String name = "";
+            Button myB = null;
+            String number = "";
             Uri contactUri = data.getData();
-            Cursor cursor = getContentResolver().query(contactUri, null, null, null, null);
-            cursor.moveToFirst();
-            int column = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-            String contact1 = cursor.getString(column);
-            Log.d("phone number", cursor.getString(column));
-            dbHelper.addNewContact(contact1);
+            String[] projection    = new String[] {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                    ContactsContract.CommonDataKinds.Phone.NUMBER};
+
+            Cursor people = getContentResolver().query(contactUri, projection, null, null, null);
+
+            int indexName = people.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+            int indexNumber = people.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+
+            if(people.moveToFirst()) {
+                do {
+                    name   = people.getString(indexName);
+                    number = people.getString(indexNumber);
+                    Log.d("name", name);
+                    Log.d("number", number);
+
+                   Log.d("ALEX databse", "add the name and phone number to database");
+                    dbHelper.addNewContact(number);
+                } while (people.moveToNext());
+            }
+            if (clickedButton.equalsIgnoreCase("myContact1")) {
+                myB = (Button) findViewById(R.id.contact1);
+            }
+            else if(clickedButton.equalsIgnoreCase("myContact2")) {
+                myB = (Button) findViewById(R.id.contact2);
+            }
+            else if(clickedButton.equalsIgnoreCase("myContact3")) {
+                myB = (Button) findViewById(R.id.contact3);
+            }
+
+            //set the button to contact name
+            myB.setText(name + "         " + number);
+
         }
     }
 
@@ -163,8 +254,8 @@ public class MainActivity extends AppCompatActivity {
                                                     break;
                                                 case DialogInterface.BUTTON_NEGATIVE:
                                                     // proceed with logic by disabling the related features or quit the app.
-                                                    locationButton.setEnabled(false);
-                                                    sendButton.setEnabled(false);
+                                                    //locationButton.setEnabled(false);
+                                                    //sendButton.setEnabled(false);
                                                     break;
                                             }
                                         }
@@ -175,8 +266,9 @@ public class MainActivity extends AppCompatActivity {
                         else {
                             Toast.makeText(this, "Go to settings and enable permissions", Toast.LENGTH_LONG)
                                     .show();
-                            locationButton.setEnabled(false);
-                            sendButton.setEnabled(false);
+                            saveButton.setEnabled(false);
+                            //locationButton.setEnabled(false);
+                            //sendButton.setEnabled(false);
                             //proceed with logic by disabling the related features or quit the app.
                         }
                     }
@@ -199,9 +291,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if(checkAndRequestPermissions()) {
-
-            sendButton.setEnabled(true);
-            locationButton.setEnabled(true);
+            saveButton.setEnabled(true);
+            //sendButton.setEnabled(true);
+            //locationButton.setEnabled(true);
 
         }
     }

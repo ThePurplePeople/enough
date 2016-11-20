@@ -67,12 +67,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * Adds a new contact to the EmergencyContact table.
      * @param number The phone number of an SMS supported device.
+     *  The name of the contact
      */
     public void addNewContact(String number) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contact = new ContentValues();
 
         contact.put(DatabaseContract.EmergencyContacts.COLUMN_NAME_NUMBER, number);
+        //contact.put(DatabaseContract.EmergencyContacts.CONTACT_NAME, name);
         db.insert(DatabaseContract.EmergencyContacts.TABLE_NAME, null, contact);
     }
 

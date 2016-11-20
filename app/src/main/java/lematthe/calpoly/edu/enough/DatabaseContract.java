@@ -19,12 +19,14 @@ public final class DatabaseContract {
 
     /* Inner class that defines the table contents */
     public static abstract class EmergencyContacts implements BaseColumns {
+
         public static final String TABLE_NAME = "EmergencyContacts";
         public static final String COLUMN_NAME_NUMBER = "number";
+        public static final String CONTACT_NAME = "name";
         public static final String CREATE_TABLE = "CREATE TABLE " +
                 TABLE_NAME + " (" +
                 _ID + " INTEGER PRIMARY KEY," +
-                COLUMN_NAME_NUMBER + TEXT_TYPE + " )";
+                COLUMN_NAME_NUMBER + TEXT_TYPE + "," + CONTACT_NAME + TEXT_TYPE + ")";
         public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
     }
 
