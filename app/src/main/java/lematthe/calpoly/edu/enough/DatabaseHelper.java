@@ -68,9 +68,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Adds a new contact to the EmergencyContact table.
+     * @param name The name of an EmergencyContact
      * @param number The phone number of an SMS supported device.
      *
-     *  The name of the contact
+     * @return boolean true if contact successfully added, otherwise false
      */
     public boolean addNewContact(String name, String number) {
         SQLiteDatabase db = getReadableDatabase();
