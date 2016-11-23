@@ -7,7 +7,7 @@ import android.provider.BaseColumns;
  */
 
 public final class DatabaseContract {
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "contactmessage.db";
     private static final String TEXT_TYPE = " TEXT";
     private static final String BOOL_TYPE = " BOOLEAN";
@@ -21,12 +21,14 @@ public final class DatabaseContract {
     public static abstract class EmergencyContacts implements BaseColumns {
 
         public static final String TABLE_NAME = "EmergencyContacts";
-        public static final String COLUMN_NAME_NUMBER = "number";
+        public static final String CONTACT_NUMBER = "number";
         public static final String CONTACT_NAME = "name";
         public static final String CREATE_TABLE = "CREATE TABLE " +
                 TABLE_NAME + " (" +
                 _ID + " INTEGER PRIMARY KEY," +
-                COLUMN_NAME_NUMBER + TEXT_TYPE + "," + CONTACT_NAME + TEXT_TYPE + ")";
+                CONTACT_NAME + TEXT_TYPE + "," +
+                CONTACT_NUMBER + TEXT_TYPE + ")";
+
         public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
     }
 

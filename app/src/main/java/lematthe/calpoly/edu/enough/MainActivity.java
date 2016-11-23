@@ -30,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
     public final int PERMISSION_ALL = 1;
     public final int LOCATION_PERM = 2;
 
+    // Using two arrays because we need predictable indexing and unchanging sizes
+    public String[] newContactNames = new String[3];
+    public String[] newContactNumbers = new String[3];
+
     String TAG = "here";
     Button sendButton;
     Button locationButton;
@@ -69,6 +73,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 contactClicked();
                 clickedButton = "myContact1";
+                try {
+                    newContactNames[0] = "";
+                    newContactNumbers[0] = "";
+                } catch(Exception e) { }
             }
         });
 
@@ -77,6 +85,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 contactClicked();
                 clickedButton = "myContact2";
+                try {
+                    newContactNames[1] = "";
+                    newContactNumbers[1] = "";
+                } catch(Exception e) { }
 
             }
         });
@@ -86,6 +98,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 contactClicked();
                 clickedButton = "myContact3";
+                try {
+                    newContactNames[2] = "";
+                    newContactNumbers[2] = "";
+                } catch(Exception e) { }
 
             }
         });
@@ -108,27 +124,13 @@ public class MainActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("ALEX database: ", "check if the fields are all filled if YES then save");
-                Log.d("if not filled", "we need to not let the activitiy finish");
+                for(int i = 0; i < 3; i++) {
+                    if(newContactNames[i] != "" && newContactNumbers[i] != "") {
+                        dbHelper.addNewContact(newContactNames[i], newContactNumbers[i]);
+                    }
+                }
             }
         });
-
-        //Sending a Text functionality implement in widget
-        /*sendButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                System.out.println("Send clicked");
-                ArrayList<String> numbers = dbHelper.sendEmergency();
-                for(String n : numbers) {
-                    SmsManager smsManager = SmsManager.getDefault();
-                    smsManager.sendTextMessage(
-                            "+1" + n,
-                            null,
-                            "This is a test message!",
-                            null,
-                            null);
-                    }
-            }
-        });*/
 
         /*locationButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,11 +188,21 @@ public class MainActivity extends AppCompatActivity {
                 do {
                     name   = people.getString(indexName);
                     number = people.getString(indexNumber);
-                    Log.d("name", name);
-                    Log.d("number", number);
 
-                   Log.d("ALEX databse", "add the name and phone number to database");
-                    dbHelper.addNewContact(number);
+                    if(name.length() > 0 && number.length() > 0){
+                        if(clickedButton.equals("myContact1")) {
+                            newContactNames[0] = name;
+                            newContactNumbers[0] = number;
+                        }
+                        else if(clickedButton.equals("myContact2")) {
+                            newContactNames[1] = name;
+                            newContactNumbers[1] = number;
+                        }
+                        else if(clickedButton.equals("myContact3")) {
+                            newContactNames[2] = name;
+                            newContactNumbers[2] = number;
+                        }
+                    }
                 } while (people.moveToNext());
             }
             if (clickedButton.equalsIgnoreCase("myContact1")) {

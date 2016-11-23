@@ -24,7 +24,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     public DatabaseHelper(Context context) {
         super(context, DatabaseContract.DATABASE_NAME, null, DatabaseContract.DATABASE_VERSION);
-        System.out.println("DB Constructor Hit");
     }
 
     // Method is called during creation of the database
@@ -34,15 +33,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         System.out.println(DatabaseContract.Messages.CREATE_TABLE);
         db.execSQL(DatabaseContract.EmergencyContacts.CREATE_TABLE);
         db.execSQL(DatabaseContract.Messages.CREATE_TABLE);
-
     }
 
     // Method is called during an upgrade of the database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(DatabaseContract.EmergencyContacts.DELETE_TABLE);
-        db.execSQL(DatabaseContract.Messages.DELETE_TABLE);
-        onCreate(db);
+        if(newVersion != oldVersion) {
+            db.execSQL(DatabaseContract.EmergencyContacts.DELETE_TABLE);
+            db.execSQL(DatabaseContract.Messages.DELETE_TABLE);
+            onCreate(db);
+            System.out.println("upgrade");
+        }
+
     }
 
     /**
@@ -67,15 +69,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * Adds a new contact to the EmergencyContact table.
      * @param number The phone number of an SMS supported device.
+     *
      *  The name of the contact
      */
-    public void addNewContact(String number) {
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues contact = new ContentValues();
+    public boolean addNewContact(String name, String number) {
+        SQLiteDatabase db = getReadableDatabase();
+        String select = "SELECT number FROM EmergencyContacts";
+        ArrayList<String> numbers = new ArrayList<>();
+        // Check if there are already 3 entries inside
+        try {
+            Cursor cursor = db.rawQuery(select, null);
+            try {
 
-        contact.put(DatabaseContract.EmergencyContacts.COLUMN_NAME_NUMBER, number);
-        //contact.put(DatabaseContract.EmergencyContacts.CONTACT_NAME, name);
-        db.insert(DatabaseContract.EmergencyContacts.TABLE_NAME, null, contact);
+                // looping through all rows and adding to list
+                if (cursor.moveToFirst()) {
+                    do {
+                        numbers.add(cursor.getString(0));
+                    } while (cursor.moveToNext());
+                }
+
+            } finally {
+                try { cursor.close(); } catch (Exception ignore) {}
+            }
+        } finally {
+            try { db.close(); } catch (Exception ignore) {}
+        }
+        if(numbers.size() < 3) {
+            db = getWritableDatabase();
+            ContentValues contact = new ContentValues();
+            contact.put(DatabaseContract.EmergencyContacts.CONTACT_NAME, name);
+            contact.put(DatabaseContract.EmergencyContacts.CONTACT_NUMBER, number);
+            db.insert(DatabaseContract.EmergencyContacts.TABLE_NAME, null, contact);
+
+            return true;
+        }
+        System.out.println("Database for contacts is already full");
+        return false;
     }
 
     /**
@@ -85,7 +114,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<String> sendEmergency() {
         SQLiteDatabase db = getReadableDatabase();
         String select = "SELECT number FROM EmergencyContacts";
-        System.out.println(select);
         ArrayList<String> numbers = new ArrayList<String>();
 
         try {
