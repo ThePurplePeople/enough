@@ -137,4 +137,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return numbers;
     }
 
+    /**
+     * Data for all members added to emergency contacts are returned
+     * @return ArrayList containing Name and Number of all Contacts
+     */
+    public ArrayList<String> getContacts() {
+        SQLiteDatabase db = getReadableDatabase();
+        String select = "SELECT name, number FROM EmergencyContacts";
+
+        ArrayList<String> contacts = new ArrayList<>();
+
+        try {
+            Cursor cursor = db.rawQuery(select, null);
+            try {
+
+                // looping through all rows and adding to list
+                if (cursor.moveToFirst()) {
+                    do {
+                        contacts.add(cursor.getString(0));
+                        contacts.add(cursor.getString(1));
+                    } while (cursor.moveToNext());
+                }
+
+            } finally {
+                try { cursor.close(); } catch (Exception ignore) {}
+            }
+        } finally {
+            try { db.close(); } catch (Exception ignore) {}
+        }
+
+        return contacts;
+    }
+
 }

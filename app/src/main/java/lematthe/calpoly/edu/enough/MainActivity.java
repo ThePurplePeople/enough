@@ -53,9 +53,6 @@ public class MainActivity extends AppCompatActivity {
         // carry on the normal flow, as the case of  permissions  granted.
         //find contact buttons
 
-        if (savedInstanceState!=null) {
-            Log.d("ALEX databse", "set the contact buttons with name and number");
-        }
         myContact1 = (Button) findViewById(R.id.contact1);
         myContact2 = (Button) findViewById(R.id.contact2);
         myContact3 = (Button) findViewById(R.id.contact3);
@@ -67,6 +64,27 @@ public class MainActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(getApplicationContext());
         saveButton = (Button) findViewById(R.id.save);
         //locationButton = (Button) findViewById(R.id.location);
+
+        // Set contacts if saved
+        ArrayList<String> savedContacts = dbHelper.getContacts();
+
+        for(int i = 0; i < savedContacts.size(); i+=2) {
+            String name = savedContacts.get(i);
+            String number = savedContacts.get(i+1);
+
+            if(i == 0) {
+                Button b = (Button) findViewById(R.id.contact1);
+                b.setText(name + "         " + number);
+            }
+            if(i == 2) {
+                Button b = (Button) findViewById(R.id.contact2);
+                b.setText(name + "         " + number);
+            }
+            if(i == 4) {
+                Button b = (Button) findViewById(R.id.contact3);
+                b.setText(name + "         " + number);
+            }
+        }
 
         myContact1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
                         dbHelper.addNewContact(newContactNames[i], newContactNumbers[i]);
                     }
                 }
+                System.out.println("Save button clicked");
             }
         });
 
