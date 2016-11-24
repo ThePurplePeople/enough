@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     public String[] newContactNames = new String[3];
     public String[] newContactNumbers = new String[3];
 
+    boolean setup_done = false;
     String TAG = "here";
     Button sendButton;
     Button locationButton;
@@ -129,6 +130,15 @@ public class MainActivity extends AppCompatActivity {
                         dbHelper.addNewContact(newContactNames[i], newContactNumbers[i]);
                     }
                 }
+                setup_done = true;
+
+                if (setup_done == true) {
+                    Context context = v.getContext();
+                    Intent intent = new Intent(context, ScreenSaverActivity.class);
+                    intent.putExtra("sup", "sup");
+                    context.startActivity(intent);
+
+                }
             }
         });
 
@@ -138,6 +148,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("clicked", "get location");
             }
         });*/
+
+
 
     }
 
