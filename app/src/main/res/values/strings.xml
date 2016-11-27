@@ -17,4 +17,7 @@
     <string name="message4">Message 4</string>
     <string name="message5">Message 5</string>
     <string name="save">Save</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="configure">Configure</string>
+    <string name="add_widget">Add widget</string>
 </resources>
