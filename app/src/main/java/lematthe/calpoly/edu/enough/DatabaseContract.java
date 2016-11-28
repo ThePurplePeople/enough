@@ -18,6 +18,20 @@ public final class DatabaseContract {
     private DatabaseContract() {}
 
     /* Inner class that defines the table contents */
+    public static abstract class UserInfo implements BaseColumns {
+        public static final String TABLE_NAME = "UserInfo";
+        public static final String USER_FIRST_NAME = "firstName";
+        public static final String USER_LAST_NAME = "lastName";
+        public static final String CREATE_TABLE = "CREATE TABLE " +
+                TABLE_NAME + " (" +
+                _ID + " INTEGER PRIMARY KEY," +
+                USER_FIRST_NAME + TEXT_TYPE + "," +
+                USER_LAST_NAME + TEXT_TYPE + ")";
+
+        public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+
+    }
+
     public static abstract class EmergencyContacts implements BaseColumns {
 
         public static final String TABLE_NAME = "EmergencyContacts";
@@ -35,13 +49,12 @@ public final class DatabaseContract {
     public static abstract class Messages implements BaseColumns {
         public static final String TABLE_NAME = "Messages";
         public static final String COLUMN_NAME_MESSAGE = "message";
-        public static final String COLUMN_NAME_SELECTED = "selected";
+        //public static final String COLUMN_NAME_SELECTED = "selected";
 
         public static final String CREATE_TABLE = "CREATE TABLE " +
                 TABLE_NAME + " (" +
                 _ID + " INTEGER PRIMARY KEY," +
-                COLUMN_NAME_MESSAGE + TEXT_TYPE + COMMA_SEP +
-                COLUMN_NAME_SELECTED + BOOL_TYPE + " )";
+                COLUMN_NAME_MESSAGE + TEXT_TYPE + " )";
         public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
     }
 }

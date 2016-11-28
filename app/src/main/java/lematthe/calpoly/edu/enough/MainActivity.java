@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,13 +37,15 @@ public class MainActivity extends AppCompatActivity {
 
     String TAG = "here";
     Button sendButton;
-    Button locationButton;
     Button myContact1;
     Button myContact2;
     Button myContact3;
     String clickedButton;
     Button selectM;
     Button saveButton;
+    String checkButtonText;
+    EditText firstName;
+    EditText lastName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,35 +66,52 @@ public class MainActivity extends AppCompatActivity {
 
         dbHelper = new DatabaseHelper(getApplicationContext());
         saveButton = (Button) findViewById(R.id.save);
-        //locationButton = (Button) findViewById(R.id.location);
+
+        firstName = (EditText) findViewById(R.id.firstName);
+        lastName = (EditText) findViewById(R.id.lastName);
+
 
         // Set contacts if saved
+        if (savedInstanceState != null) {
+            Log.d("saved", "saved");
+        }
         ArrayList<String> savedContacts = dbHelper.getContacts();
+        if (savedContacts.size() > 0) {
+            Log.d("bigger than", "big");
+            Log.d("size", String.valueOf(savedContacts.size()));
+            for (int i = 0; i < savedContacts.size(); i += 2) {
+                String name = savedContacts.get(i);
+                String number = savedContacts.get(i + 1);
 
-        for(int i = 0; i < savedContacts.size(); i+=2) {
-            String name = savedContacts.get(i);
-            String number = savedContacts.get(i+1);
-
-            if(i == 0) {
-                Button b = (Button) findViewById(R.id.contact1);
-                b.setText(name + "         " + number);
+                if (i == 0) {
+                    Button b = (Button) findViewById(R.id.contact1);
+                    b.setText(name + "         " + number);
+                }
+                if (i == 2) {
+                    Button b = (Button) findViewById(R.id.contact2);
+                    b.setText(name + "         " + number);
+                }
+                if (i == 4) {
+                    Button b = (Button) findViewById(R.id.contact3);
+                    b.setText(name + "         " + number);
+                }
             }
-            if(i == 2) {
-                Button b = (Button) findViewById(R.id.contact2);
-                b.setText(name + "         " + number);
-            }
-            if(i == 4) {
-                Button b = (Button) findViewById(R.id.contact3);
-                b.setText(name + "         " + number);
-            }
+        }
+        else {
+            Log.d("here", "small");
+            myContact1.setText("Contact 1");
+            myContact2.setText("Contact 2");
+            myContact3.setText("Contact 3");
         }
 
         myContact1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                checkButtonText = ((Button) v).getText().toString();
                 contactClicked();
                 clickedButton = "myContact1";
                 try {
+                    Log.d("what does this do", "que");
                     newContactNames[0] = "";
                     newContactNumbers[0] = "";
                 } catch(Exception e) { }
@@ -101,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
         myContact2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                checkButtonText = ((Button) v).getText().toString();
                 contactClicked();
                 clickedButton = "myContact2";
                 try {
@@ -114,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
         myContact3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                checkButtonText = ((Button) v).getText().toString();
                 contactClicked();
                 clickedButton = "myContact3";
                 try {
@@ -142,25 +164,36 @@ public class MainActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for(int i = 0; i < 3; i++) {
-                    if(newContactNames[i] != "" && newContactNumbers[i] != "") {
-                        dbHelper.addNewContact(newContactNames[i], newContactNumbers[i]);
-                    }
+                if (!checkRequiredFields()) {
+                    Log.d("NOT all fields", "in here");
+                }
+                else {
+                    Log.d("all fields are filled", "in here");
                 }
                 System.out.println("Save button clicked");
             }
         });
 
-        /*locationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("clicked", "get location");
-            }
-        });*/
-
     }
 
 
+    /*
+     * This is a method that is called when the save button is pressed
+     * checks database to make sure required fields are filled
+     *  @return true if all fields are filled
+     */
+    public boolean checkRequiredFields() {
+        firstName = (EditText) findViewById(R.id.firstName);
+        lastName = (EditText) findViewById(R.id.lastName);
+        ArrayList <String> checkContacts = dbHelper.getContacts();
+        String message = dbHelper.getMessage();
+        if (checkContacts.size() > 0 && !message.isEmpty() && !firstName.getText().toString().isEmpty() && !lastName.getText().toString().isEmpty()) {
+            dbHelper.deleteUserInfo();
+            dbHelper.insertUserInfo(firstName.getText().toString(), lastName.getText().toString());
+            return true;
+        }
+        return false;
+    }
 
     public void contactClicked(){
         Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
@@ -203,6 +236,8 @@ public class MainActivity extends AppCompatActivity {
             int indexName = people.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
             int indexNumber = people.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
 
+
+
             if(people.moveToFirst()) {
                 do {
                     name   = people.getString(indexName);
@@ -212,14 +247,28 @@ public class MainActivity extends AppCompatActivity {
                         if(clickedButton.equals("myContact1")) {
                             newContactNames[0] = name;
                             newContactNumbers[0] = number;
+                            Log.d("contact chosen", "contact chosen");
+                            if (checkButtonText != "Contact 1") {
+                                dbHelper.deleteContact(1);
+                            }
+                            dbHelper.addNewContact(String.valueOf(1), name, number);
                         }
                         else if(clickedButton.equals("myContact2")) {
                             newContactNames[1] = name;
                             newContactNumbers[1] = number;
+                            if (checkButtonText != "Contact 2") {
+                                Log.d("deleting 2", "two");
+                                dbHelper.deleteContact(2);
+                            }
+                            dbHelper.addNewContact(String.valueOf(2), name, number);
                         }
                         else if(clickedButton.equals("myContact3")) {
                             newContactNames[2] = name;
                             newContactNumbers[2] = number;
+                            if (checkButtonText != "Contact 3") {
+                                dbHelper.deleteContact(3);
+                            }
+                            dbHelper.addNewContact(String.valueOf(3),name, number);
                         }
                     }
                 } while (people.moveToNext());
@@ -233,7 +282,6 @@ public class MainActivity extends AppCompatActivity {
             else if(clickedButton.equalsIgnoreCase("myContact3")) {
                 myB = (Button) findViewById(R.id.contact3);
             }
-
             //set the button to contact name
             myB.setText(name + "         " + number);
 
@@ -327,6 +375,25 @@ public class MainActivity extends AppCompatActivity {
             //locationButton.setEnabled(true);
 
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String firstCheck = dbHelper.getFirstName();
+        String lastCheck = dbHelper.getLastName();
+
+        if (!firstCheck.isEmpty() && !lastCheck.isEmpty()) {
+            firstName.setText(firstCheck);
+            lastName.setText(lastCheck);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        dbHelper.deleteUserInfo();
+        dbHelper.insertUserInfo(firstName.getText().toString(), lastName.getText().toString());
     }
 
 }

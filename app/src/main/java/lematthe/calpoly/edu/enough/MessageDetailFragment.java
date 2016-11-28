@@ -1,10 +1,12 @@
 package lematthe.calpoly.edu.enough;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import static android.R.attr.fragment;
 
 /**
  * Created by laurenmatthews on 11/18/16.
@@ -26,6 +30,8 @@ public class MessageDetailFragment extends Fragment {
     public TextView message4;
     public TextView message5;
     public Button saveMessage;
+    public DatabaseHelper dbHelper; // The database helper(manager)
+
 
 
     public MessageDetailFragment() {
@@ -35,9 +41,11 @@ public class MessageDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
+        dbHelper = new DatabaseHelper(getActivity());
         Activity activity = this.getActivity();
-
+        if (savedInstanceState != null) {
+            Log.d("saved instance", "saved");
+        }
         Log.d("ALEX database", "get from database message if any");
     }
 
@@ -45,10 +53,23 @@ public class MessageDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.message_detail, container, false);
+        Log.d("on create view", "here");
 
+        rootView.setOnKeyListener( new View.OnKeyListener() {
+            @Override
+            public boolean onKey( View v, int keyCode, KeyEvent event ) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    Log.d("back pressed", "in here");
+                }
+                return true;
+            }
+        });
         //get view items
         userMessage = (EditText) rootView.findViewById(R.id.user_message);
-        Log.d("ALEX databse:", "if the database has a message set the EditText to that message");
+        String message = dbHelper.getMessage();
+        if (!message.isEmpty()) {
+            userMessage.setText(message);
+        }
 
         message1 = (TextView) rootView.findViewById(R.id.message1);
         message2 = (TextView) rootView.findViewById(R.id.message2);
@@ -116,10 +137,12 @@ public class MessageDetailFragment extends Fragment {
         message_entered = userMessage.getText().toString();
         if (message_entered.matches("")) {
             Toast.makeText(this.getActivity(), "You did not enter a message", Toast.LENGTH_SHORT).show();
+            dbHelper.deleteMessage();
             return;
         }
         else {
-            Log.d("ALEX database:", "save the message to the database!");
+            dbHelper.deleteMessage();
+            dbHelper.insertMessage(message_entered);
             getActivity().finish();
         }
     }
@@ -127,10 +150,9 @@ public class MessageDetailFragment extends Fragment {
 
     //If the back button is pressed instead of save then save the message if there is one
     @Override
-    public void onPause(){
-        super.onPause();
-        Log.d("ALEX databse:", "save the message if there is one in the databse");
+    public void onStop(){
+        saveMessageandFinish();
+        super.onStop();
     }
-
 
 }
