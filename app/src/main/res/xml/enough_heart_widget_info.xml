@@ -4,6 +4,6 @@
     android:initialLayout="@layout/enough_heart_widget"
     android:minHeight="40dp"
     android:minWidth="40dp"
-    android:previewImage="@drawable/ic_heart_widget"
+    android:previewImage="@drawable/ic_heart"
     android:updatePeriodMillis="86400000"
     android:widgetCategory="home_screen"></appwidget-provider>
