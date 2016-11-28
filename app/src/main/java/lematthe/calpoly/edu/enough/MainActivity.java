@@ -71,10 +71,6 @@ public class MainActivity extends AppCompatActivity {
         lastName = (EditText) findViewById(R.id.lastName);
 
 
-        // Set contacts if saved
-        if (savedInstanceState != null) {
-            Log.d("saved", "saved");
-        }
         ArrayList<String> savedContacts = dbHelper.getContacts();
         if (savedContacts.size() > 0) {
             Log.d("bigger than", "big");
@@ -168,6 +164,8 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("NOT all fields", "in here");
                 }
                 else {
+                    //send the original text message
+                    //go to end activity
                     Log.d("all fields are filled", "in here");
                 }
                 System.out.println("Save button clicked");
