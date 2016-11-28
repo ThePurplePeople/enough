@@ -17,9 +17,6 @@
         <activity android:name=".SetupActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-<<<<<<< HEAD
-
-=======
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -27,7 +24,6 @@
             android:name=".MainActivity"
             android:parentActivityName=".SetupActivity">
             <intent-filter>
->>>>>>> 53e2bee240d17704e002e39036af7111bc0a5906
                 <uses-permission android:name="android.permission.READ_CONTACTS" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
