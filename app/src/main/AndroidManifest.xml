@@ -14,13 +14,24 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".SetupActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+<<<<<<< HEAD
 
+=======
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:parentActivityName=".SetupActivity">
+            <intent-filter>
+>>>>>>> 53e2bee240d17704e002e39036af7111bc0a5906
                 <uses-permission android:name="android.permission.READ_CONTACTS" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+                <!--<action android:name="android.intent.action.MAIN" />-->
             </intent-filter>
         </activity>
         <activity
@@ -30,7 +41,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="lematthe.calpoly.edu.enough.MainActivity" />
         </activity>
-
+        <activity android:name=".ScreenSaverActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <receiver android:name=".EnoughHeartWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_ENABLED" />
