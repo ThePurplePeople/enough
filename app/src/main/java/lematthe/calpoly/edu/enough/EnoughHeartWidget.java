@@ -9,6 +9,8 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 import android.telephony.SmsManager;
@@ -20,6 +22,8 @@ import java.util.ArrayList;
  * Implementation of App Widget functionality.
  */
 public class EnoughHeartWidget extends AppWidgetProvider {
+
+    private static final int CLICK_DELAY = 500;
 
     public static String ACTION_CLICK = "ActionClick";
     public static String ACTION_SMS_SENT = "ActionSMSSent";
@@ -50,6 +54,8 @@ public class EnoughHeartWidget extends AppWidgetProvider {
             views.setOnClickPendingIntent(R.id.button_heartwidget, pendingIntent);
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
+        context.getSharedPreferences("widget", 0).edit().putInt("clicks", 0).commit();
+
     }
 
     @Override
@@ -68,12 +74,33 @@ public class EnoughHeartWidget extends AppWidgetProvider {
     }
 
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(final Context context, Intent intent) {
         super.onReceive(context, intent);
         // on click action
         if (intent.getAction().equals(ACTION_CLICK)) {
-            Log.i("M", "click");
-            emergencyAlert(context);
+            int clickCount = context.getSharedPreferences("widget", Context.MODE_PRIVATE).getInt("clicks", 0);
+            context.getSharedPreferences("widget", Context.MODE_PRIVATE).edit().putInt("clicks", ++clickCount).commit();
+
+            final Handler handler = new Handler() {
+                public void handleMessage(Message msg) {
+
+                    int clickCount = context.getSharedPreferences("widget", Context.MODE_PRIVATE).getInt("clicks", 0);
+
+                    if (clickCount > 2) emergencyAlert(context);
+
+                    context.getSharedPreferences("widget", Context.MODE_PRIVATE).edit().putInt("clicks", 0).commit();
+                }
+            };
+
+            if (clickCount == 1) new Thread() {
+                @Override
+                public void run(){
+                    try {
+                        synchronized(this) { wait(CLICK_DELAY); }
+                        handler.sendEmptyMessage(0);
+                    } catch(InterruptedException ex) {}
+                }
+            }.start();
         }
         if (intent.getAction().equals(ACTION_SMS_SENT)) {
             Log.i(ACTION_SMS_SENT, Integer.toString(getResultCode()));
