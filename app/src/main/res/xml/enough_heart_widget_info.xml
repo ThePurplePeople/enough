@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:configure="lematthe.calpoly.edu.enough.EnoughHeartWidgetConfigureActivity"
     android:initialKeyguardLayout="@layout/enough_heart_widget"
     android:initialLayout="@layout/enough_heart_widget"
     android:minHeight="40dp"
