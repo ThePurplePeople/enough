@@ -1,6 +1,7 @@
 package lematthe.calpoly.edu.enough;
 
 import android.Manifest;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     public final int PICK_CONTACT = 2015;
     public DatabaseHelper dbHelper; // The database helper(manager)
     public final int PERMISSION_ALL = 1;
+    public static String ACTION_SMS_SENT = "ActionSMSSent";
+    public static String ACTION_SMS_DELIVERED = "ActionSMSDelivered";
     public final int LOCATION_PERM = 2;
 
     // Using two arrays because we need predictable indexing and unchanging sizes
@@ -169,11 +173,36 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else {
                     Log.d("all fields are filled", "in here");
+                    ArrayList<String> savedContacts = dbHelper.getContacts();
+                    for (int i = 0; i < savedContacts.size(); i += 2) {
+                        String name = savedContacts.get(i);
+                        String number = savedContacts.get(i + 1);
+                        String initialMessage = "Hi " + name + " you have designated as an emergency contact by "
+                                + dbHelper.getFirstName().toString() + " " + dbHelper.getLastName().toString() +
+                                "on the application eNOugh. Be aware that in the event of an emergency you will be contacted via text message through this application.";
+                        //change to real number just using emulator right now
+                        sendSMS(getApplicationContext(), "5556", initialMessage);
+
+                    }
                 }
-                System.out.println("Save button clicked");
             }
         });
 
+    }
+
+    protected void sendSMS(Context context, String phoneNumber, String message) {
+        Log.d("sms sent to", phoneNumber);
+        Intent sentIntent = new Intent(context, getClass());
+        sentIntent.setAction(ACTION_SMS_SENT);
+        PendingIntent sentPI = PendingIntent.getBroadcast(context, 0,
+                sentIntent, 0);
+        Intent deliveredIntent = new Intent(context, getClass());
+        deliveredIntent.setAction(ACTION_SMS_DELIVERED);
+        PendingIntent deliveredPI = PendingIntent.getBroadcast(context, 0,
+                deliveredIntent, 0);
+
+        SmsManager sms = SmsManager.getDefault();
+        sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
     }
 
 
@@ -371,9 +400,6 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         if(checkAndRequestPermissions()) {
             saveButton.setEnabled(true);
-            //sendButton.setEnabled(true);
-            //locationButton.setEnabled(true);
-
         }
     }
 
