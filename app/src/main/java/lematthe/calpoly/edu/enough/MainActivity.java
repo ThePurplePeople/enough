@@ -185,16 +185,13 @@ public class MainActivity extends AppCompatActivity {
                         sendSMS(getApplicationContext(), "5556", initialMessage);
 
                     }
-                }
-                setup_done = true;
-
-                if (setup_done == true) {
                     Context context = v.getContext();
                     Intent intent = new Intent(context, ScreenSaverActivity.class);
                     intent.putExtra("sup", "sup");
                     context.startActivity(intent);
 
                 }
+
             }
         });
 
@@ -416,6 +413,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+//        try {
         String firstCheck = dbHelper.getFirstName();
         String lastCheck = dbHelper.getLastName();
 
@@ -423,6 +422,10 @@ public class MainActivity extends AppCompatActivity {
             firstName.setText(firstCheck);
             lastName.setText(lastCheck);
         }
+//        }
+//        catch (Exception ex) {
+//            onCreate(new Bundle());
+//        }
     }
 
     @Override
