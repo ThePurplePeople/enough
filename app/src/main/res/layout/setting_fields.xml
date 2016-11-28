@@ -147,6 +147,16 @@
                 android:textSize="20dp"
                 android:gravity="center"
                 />
+            <Button
+                android:layout_width="match_parent"
+                android:id="@+id/share_location"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:text="@string/save"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20dp"
+                android:gravity="center"
+                />
         </LinearLayout>
 
     </LinearLayout>

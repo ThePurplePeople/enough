@@ -17,4 +17,5 @@
     <string name="message4">Message 4</string>
     <string name="message5">Message 5</string>
     <string name="save">Save</string>
+    <string name="location">Share Location</string>
 </resources>
