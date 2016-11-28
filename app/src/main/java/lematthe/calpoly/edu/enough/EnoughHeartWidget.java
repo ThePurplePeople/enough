@@ -3,25 +3,15 @@
  */
 package lematthe.calpoly.edu.enough;
 
-import android.Manifest;
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.app.PendingIntent;
-import android.provider.Telephony;
-import android.support.v4.content.ContextCompat;
-import android.widget.ImageButton;
 import android.widget.RemoteViews;
 import android.widget.Toast;
-import android.os.Message;
-import android.os.Handler;
 import android.telephony.SmsManager;
-import android.content.pm.PackageManager;
-
-
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -136,7 +126,7 @@ public class EnoughHeartWidget extends AppWidgetProvider {
                 sendSMS(context, number, message);
             }
         } catch (Exception e) {
-            Toast.makeText(context, R.string.alert_error, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "ERROR: Unable to deliver SMS.", Toast.LENGTH_SHORT).show();
         }
     }
 
