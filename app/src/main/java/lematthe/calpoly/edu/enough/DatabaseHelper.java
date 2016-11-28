@@ -203,7 +203,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /*
-     *Deletes a contact from the EmergencyContact table
+     * Deletes a contact from the EmergencyContact table
      * @param id The id of the contact to delete from
      * @return boolean true if contact successfully deleted, otherwise false
      */
@@ -264,7 +264,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * Returns all emergency contacts stored in list.
      * @return ArrayList containing phone numbers sans country code
      */
-    public ArrayList<String> sendEmergency() {
+    public ArrayList<String> getNumbers() {
         SQLiteDatabase db = getReadableDatabase();
         String select = "SELECT number FROM EmergencyContacts";
         ArrayList<String> numbers = new ArrayList<String>();
@@ -297,7 +297,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         String select = "SELECT name, number FROM EmergencyContacts";
 
-        ArrayList<String> contacts = new ArrayList<>();
+        ArrayList<String> contacts = new ArrayList<String>();
 
         try {
             Cursor cursor = db.rawQuery(select, null);
