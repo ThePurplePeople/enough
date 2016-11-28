@@ -27,5 +27,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="lematthe.calpoly.edu.enough.MainActivity" />
         </activity>
+        <activity
+            android:name=".MapsActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="com.google.android.geo.API_KEY"
+                android:value="@string/google_maps_key" />
+        </activity>
     </application>
 </manifest>
