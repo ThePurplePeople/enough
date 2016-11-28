@@ -34,12 +34,14 @@
             android:layout_weight="0.15">
 
             <EditText
+                android:id="@+id/firstName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="First"
                 android:layout_weight="1" />
 
             <EditText
+                android:id="@+id/lastName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Last"
