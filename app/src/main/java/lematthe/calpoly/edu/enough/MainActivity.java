@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     public String[] newContactNames = new String[3];
     public String[] newContactNumbers = new String[3];
 
+    boolean setup_done = false;
     String TAG = "here";
     Button sendButton;
     Button myContact1;
@@ -184,7 +185,13 @@ public class MainActivity extends AppCompatActivity {
                         sendSMS(getApplicationContext(), "5556", initialMessage);
 
                     }
+                    Context context = v.getContext();
+                    Intent intent = new Intent(context, ScreenSaverActivity.class);
+                    intent.putExtra("sup", "sup");
+                    context.startActivity(intent);
+
                 }
+
             }
         });
 
@@ -406,6 +413,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+//        try {
         String firstCheck = dbHelper.getFirstName();
         String lastCheck = dbHelper.getLastName();
 
@@ -413,6 +422,10 @@ public class MainActivity extends AppCompatActivity {
             firstName.setText(firstCheck);
             lastName.setText(lastCheck);
         }
+//        }
+//        catch (Exception ex) {
+//            onCreate(new Bundle());
+//        }
     }
 
     @Override
