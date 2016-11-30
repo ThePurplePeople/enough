@@ -140,9 +140,9 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
         }
         try {
             Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
             if (location == null) {
                 Log.d(TAG, "ConnectLocationNull");
-                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
                 // null case
             } else {
                 mLastLocation = location;
@@ -158,6 +158,8 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
     }
 
     private void startLocationUpdates(Location location) {
+        Log.d(TAG, location.toString());
+
         double currentLatitude = location.getLatitude();
         double currentLongitude = location.getLongitude();
         LatLng latLng = new LatLng(currentLatitude, currentLongitude);
@@ -167,6 +169,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
                 .title("I am here!");
         mMap.addMarker(options);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(19));
     }
 
     @Override
