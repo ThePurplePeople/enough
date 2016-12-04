@@ -16,5 +16,7 @@
     <string name="message3">Message 3</string>
     <string name="message4">Message 4</string>
     <string name="message5">Message 5</string>
+    <string name="setUpText">Click to Set Up</string>
     <string name="save">Save</string>
+    <string name="location">Share Location</string>
 </resources>
