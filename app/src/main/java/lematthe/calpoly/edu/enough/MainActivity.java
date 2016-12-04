@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         selectM = (Button) findViewById(R.id.selectmessage);
         locationButton = (Button) findViewById(R.id.share_location);
 
-        //send button here for now to show functionality
+        //send button here  for now to show functionality
         sendButton = (Button) findViewById(R.id.save);
 
         dbHelper = new DatabaseHelper(getApplicationContext());
@@ -102,9 +102,9 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             Log.d("here", "small");
-            myContact1.setText("Contact 1");
-            myContact2.setText("Contact 2");
-            myContact3.setText("Contact 3");
+            myContact1.setText(R.string.contact1);
+            myContact2.setText(R.string.contact2);
+            myContact3.setText(R.string.contact3);
         }
 
         myContact1.setOnClickListener(new View.OnClickListener() {
@@ -294,7 +294,7 @@ public class MainActivity extends AppCompatActivity {
                             newContactNames[0] = name;
                             newContactNumbers[0] = number;
                             Log.d("contact chosen", "contact chosen");
-                            if (checkButtonText != "Contact 1") {
+                            if (checkButtonText != getString(R.string.contact1)) {
                                 dbHelper.deleteContact(1);
                             }
                             dbHelper.addNewContact(String.valueOf(1), name, number);
@@ -302,7 +302,7 @@ public class MainActivity extends AppCompatActivity {
                         else if(clickedButton.equals("myContact2")) {
                             newContactNames[1] = name;
                             newContactNumbers[1] = number;
-                            if (checkButtonText != "Contact 2") {
+                            if (checkButtonText != getString(R.string.contact2)) {
                                 Log.d("deleting 2", "two");
                                 dbHelper.deleteContact(2);
                             }
@@ -311,7 +311,7 @@ public class MainActivity extends AppCompatActivity {
                         else if(clickedButton.equals("myContact3")) {
                             newContactNames[2] = name;
                             newContactNumbers[2] = number;
-                            if (checkButtonText != "Contact 3") {
+                            if (checkButtonText != getString(R.string.contact3)) {
                                 dbHelper.deleteContact(3);
                             }
                             dbHelper.addNewContact(String.valueOf(3),name, number);

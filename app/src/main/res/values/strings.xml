@@ -19,4 +19,7 @@
     <string name="setUpText">Click to Set Up</string>
     <string name="save">Save</string>
     <string name="location">Share Location</string>
+    <string name="contact1">Tap to select contact 1</string>
+    <string name="contact2">Tap to select contact 2</string>
+    <string name="contact3">Tap to select contact 3</string>
 </resources>
