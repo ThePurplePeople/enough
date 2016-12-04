@@ -18,6 +18,8 @@ import android.view.View;
 public class MessageDetailActivity extends AppCompatActivity {
  //inflate the Message_Detail_Fragment
 
+    private MessageDetailFragment fragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +40,7 @@ public class MessageDetailActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
-            MessageDetailFragment fragment = new MessageDetailFragment();
+            fragment = new MessageDetailFragment();
             getSupportFragmentManager().beginTransaction().add(R.id.message_frag_container, fragment).commit();
 
         }
@@ -46,14 +48,11 @@ public class MessageDetailActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onKeyDown (int keyCode, KeyEvent event)
-    {
-        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-            finish();
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Log.d("in here", "back back back");
         }
-        return super.onKeyDown(keyCode, event);
+        return true;
     }
-
 
 }

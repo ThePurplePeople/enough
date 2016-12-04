@@ -1,6 +1,7 @@
 package lematthe.calpoly.edu.enough;
 
 import android.Manifest;
+import android.widget.GridLayout.LayoutParams;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     String checkButtonText;
     EditText firstName;
     EditText lastName;
+    TextView messageEntered;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,11 @@ public class MainActivity extends AppCompatActivity {
         myContact3 = (Button) findViewById(R.id.contact3);
         selectM = (Button) findViewById(R.id.selectmessage);
         locationButton = (Button) findViewById(R.id.share_location);
+        messageEntered = (TextView) findViewById(R.id.message_entered);
+
+        if (savedInstanceState == null) {
+            savedInstanceState = new Bundle();
+        }
 
         //send button here for now to show functionality
         sendButton = (Button) findViewById(R.id.save);
@@ -80,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayList<String> savedContacts = dbHelper.getContacts();
         if (savedContacts.size() > 0) {
-            Log.d("bigger than", "big");
             Log.d("size", String.valueOf(savedContacts.size()));
             for (int i = 0; i < savedContacts.size(); i += 2) {
                 String name = savedContacts.get(i);
@@ -101,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         else {
-            Log.d("here", "small");
             myContact1.setText("Contact 1");
             myContact2.setText("Contact 2");
             myContact3.setText("Contact 3");
@@ -114,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
                 contactClicked();
                 clickedButton = "myContact1";
                 try {
-                    Log.d("what does this do", "que");
                     newContactNames[0] = "";
                     newContactNumbers[0] = "";
                 } catch(Exception e) { }
@@ -418,6 +423,7 @@ public class MainActivity extends AppCompatActivity {
         if(checkAndRequestPermissions()) {
             saveButton.setEnabled(true);
         }
+
     }
 
     @Override
@@ -432,10 +438,10 @@ public class MainActivity extends AppCompatActivity {
             firstName.setText(firstCheck);
             lastName.setText(lastCheck);
         }
-//        }
-//        catch (Exception ex) {
-//            onCreate(new Bundle());
-//        }
+        if (!dbHelper.getMessage().isEmpty()) {
+            messageEntered.setText(dbHelper.getMessage());
+        }
+
     }
 
     @Override
@@ -444,6 +450,7 @@ public class MainActivity extends AppCompatActivity {
         dbHelper.deleteUserInfo();
         dbHelper.insertUserInfo(firstName.getText().toString(), lastName.getText().toString());
     }
+
 
 }
 

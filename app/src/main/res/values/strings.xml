@@ -11,11 +11,9 @@
     <string name="contact_header">Emergency Contact Information</string>
     <string name="your_name">Your Name</string>
     <string name="select_a_message">Select a Message</string>
-    <string name="message1">Message 1</string>
-    <string name="message2">Message 2</string>
-    <string name="message3">Message 3</string>
-    <string name="message4">Message 4</string>
-    <string name="message5">Message 5</string>
+    <string name="message1">I am in danger please contact help.</string>
+    <string name="message2">I am in danger please try to contact me. </string>
+    <string name="message3">I am in danger please contact 911.</string>
     <string name="setUpText">Click to Set Up</string>
     <string name="save">Save</string>
     <string name="location">Share Location</string>

@@ -1,6 +1,7 @@
 package lematthe.calpoly.edu.enough;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -27,8 +28,6 @@ public class MessageDetailFragment extends Fragment {
     public TextView message1;
     public TextView message2;
     public TextView message3;
-    public TextView message4;
-    public TextView message5;
     public Button saveMessage;
     public DatabaseHelper dbHelper; // The database helper(manager)
 
@@ -44,26 +43,14 @@ public class MessageDetailFragment extends Fragment {
         dbHelper = new DatabaseHelper(getActivity());
         Activity activity = this.getActivity();
         if (savedInstanceState != null) {
-            Log.d("saved instance", "saved");
         }
-        Log.d("ALEX database", "get from database message if any");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.message_detail, container, false);
-        Log.d("on create view", "here");
 
-        rootView.setOnKeyListener( new View.OnKeyListener() {
-            @Override
-            public boolean onKey( View v, int keyCode, KeyEvent event ) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    Log.d("back pressed", "in here");
-                }
-                return true;
-            }
-        });
         //get view items
         userMessage = (EditText) rootView.findViewById(R.id.user_message);
         String message = dbHelper.getMessage();
@@ -74,8 +61,6 @@ public class MessageDetailFragment extends Fragment {
         message1 = (TextView) rootView.findViewById(R.id.message1);
         message2 = (TextView) rootView.findViewById(R.id.message2);
         message3 = (TextView) rootView.findViewById(R.id.message3);
-        message4 = (TextView) rootView.findViewById(R.id.message4);
-        message5 = (TextView) rootView.findViewById(R.id.message4);
 
         setPresetMessageClick();
 
@@ -114,19 +99,6 @@ public class MessageDetailFragment extends Fragment {
 
             }
         });
-        message4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                userMessage.setText(message4.getText());
-
-            }
-        });
-        message5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                userMessage.setText(message5.getText());
-            }
-        });
     }
 
 
@@ -148,11 +120,10 @@ public class MessageDetailFragment extends Fragment {
     }
 
 
-    //If the back button is pressed instead of save then save the message if there is one
+    //If the back button is pressed DONT save just go back
     @Override
     public void onStop(){
-        saveMessageandFinish();
+
         super.onStop();
     }
-
 }
