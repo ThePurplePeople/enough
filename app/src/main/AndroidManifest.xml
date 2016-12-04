@@ -54,6 +54,13 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/enough_heart_widget_info" />
         </receiver>
+        <activity
+            android:name=".MapsActivity"
+            android:parentActivityName=".MainActivity">
+        </activity>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key"/>
     </application>
 
 </manifest>

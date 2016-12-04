@@ -6,8 +6,8 @@
 
     <ImageButton
         android:id="@+id/button_heartwidget"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:background="@drawable/ic_heart"
         android:foreground="?android:selectableItemBackgroundBorderless"
         android:layout_centerVertical="true"
