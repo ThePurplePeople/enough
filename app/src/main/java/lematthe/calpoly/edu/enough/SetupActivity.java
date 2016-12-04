@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.ArrayList;
+
 /**
  * Created by Shefali on 11/27/16.
  */
@@ -21,6 +23,20 @@ public class SetupActivity extends AppCompatActivity {
         setContentView(R.layout.click_to_setup);
 
         setupButton = (Button) findViewById(R.id.setupButton);
+        setupButton.setTextColor(0xffffff);
+//        setupButton.setText("Hello");
+
+        DatabaseHelper dbHelper = new DatabaseHelper(getApplicationContext());
+        ArrayList<String> savedContacts = dbHelper.getContacts();
+
+        if (savedContacts.size() >= 1) {
+            setupButton.setText("Edit Profile");
+        }
+        else {
+            setupButton.setText("Click to Setup");
+        }
+
+
         setupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
