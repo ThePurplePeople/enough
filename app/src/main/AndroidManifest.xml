@@ -36,6 +36,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="lematthe.calpoly.edu.enough.MainActivity" />
         </activity>
+<<<<<<< HEAD
         <activity android:name=".ScreenSaverActivity">
             <intent-filter>
                 <!--<action android:name="android.intent.action.MAIN" />-->
@@ -54,6 +55,15 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/enough_heart_widget_info" />
         </receiver>
+=======
+        <activity
+            android:name=".MapsActivity"
+            android:parentActivityName=".MainActivity">
+        </activity>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key"/>
+>>>>>>> 1ba66b7a4b7ce395786e6f097be59a0e781ae850
     </application>
 
 </manifest>

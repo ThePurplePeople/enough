@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     String clickedButton;
     Button selectM;
     Button saveButton;
+    Button locationButton;
     String checkButtonText;
     EditText firstName;
     EditText lastName;
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         myContact2 = (Button) findViewById(R.id.contact2);
         myContact3 = (Button) findViewById(R.id.contact3);
         selectM = (Button) findViewById(R.id.selectmessage);
+        locationButton = (Button) findViewById(R.id.share_location);
 
         //send button here for now to show functionality
         sendButton = (Button) findViewById(R.id.save);
@@ -157,6 +159,16 @@ public class MainActivity extends AppCompatActivity {
                 Context context = v.getContext();
                 Intent intent = new Intent(context, MessageDetailActivity.class);
                 intent.putExtra("hi", "hi");
+                context.startActivity(intent);
+            }
+        });
+
+        locationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context context = v.getContext();
+                Intent intent = new Intent(context, MapsActivity.class);
+                //intent.putExtra("", "");
                 context.startActivity(intent);
             }
         });
