@@ -200,10 +200,11 @@ public class MainActivity extends AppCompatActivity {
                         sendSMS(getApplicationContext(), "5556", initialMessage);
 
                     }
-                    Context context = v.getContext();
-                    Intent intent = new Intent(context, ScreenSaverActivity.class);
-                    intent.putExtra("sup", "sup");
-                    context.startActivity(intent);
+                    finish();
+//                    Context context = v.getContext();
+//                    Intent intent = new Intent(context, ScreenSaverActivity.class);
+//                    intent.putExtra("sup", "sup");
+//                    context.startActivity(intent);
 
                 }
 
