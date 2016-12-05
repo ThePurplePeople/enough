@@ -26,5 +26,6 @@
         android:background="@android:color/transparent"
         android:textStyle="italic"
         android:id="@+id/setupButton"
+        android:textColor="@color/white"
         android:text="@string/setUpText"/>
 </LinearLayout>

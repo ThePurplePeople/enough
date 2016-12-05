@@ -63,7 +63,6 @@
                 android:text="@string/contact_header"
                 android:layout_width="match_parent"
                 android:textSize="25sp"
-                android:gravity="center"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimary"
                 android:id="@+id/textView3" />
@@ -182,16 +181,14 @@
             android:layout_height="wrap_content">
 
             <Button
-                android:layout_width="match_parent"
                 android:id="@+id/save"
-                android:layout_height="wrap_content"
-                android:background="@null"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/ripple_effect"
                 android:text="@string/save"
-                android:textColor="@color/white_transparent"
-                android:textSize="20dp"
-                android:gravity="center"
-                />
-
+                android:textSize="25sp"
+                android:textColor="@color/white"
+                android:layout_weight="1" />
         </LinearLayout>
 
 
