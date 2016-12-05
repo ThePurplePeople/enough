@@ -202,14 +202,11 @@ public class MainActivity extends AppCompatActivity {
                                 + dbHelper.getFirstName().toString() + " " + dbHelper.getLastName().toString() +
                                 "on the application eNOugh. Be aware that in the event of an emergency you will be contacted via text message through this application.";
                         //change to real number just using emulator right now
-                        sendSMS(getApplicationContext(), "5556", initialMessage);
+                        sendSMS(getApplicationContext(), number, initialMessage);
+                        Log.d("send text", "text");
 
                     }
                     finish();
-//                    Context context = v.getContext();
-//                    Intent intent = new Intent(context, ScreenSaverActivity.class);
-//                    intent.putExtra("sup", "sup");
-//                    context.startActivity(intent);
 
                 }
 
