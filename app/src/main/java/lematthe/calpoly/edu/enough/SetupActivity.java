@@ -23,7 +23,7 @@ public class SetupActivity extends AppCompatActivity {
         setContentView(R.layout.click_to_setup);
 
         setupButton = (Button) findViewById(R.id.setupButton);
-        setupButton.setTextColor(0xffffff);
+//        setupButton.setTextColor(0xffffff);
 //        setupButton.setText("Hello");
 
         DatabaseHelper dbHelper = new DatabaseHelper(getApplicationContext());
