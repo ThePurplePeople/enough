@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
         myContact2 = (Button) findViewById(R.id.contact2);
         myContact3 = (Button) findViewById(R.id.contact3);
         selectM = (Button) findViewById(R.id.selectmessage);
-        locationButton = (Button) findViewById(R.id.share_location);
         messageEntered = (TextView) findViewById(R.id.message_entered);
 
         if (savedInstanceState == null) {
@@ -165,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        locationButton.setOnClickListener(new View.OnClickListener() {
+        /*locationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Context context = v.getContext();
@@ -173,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
                 //intent.putExtra("", "");
                 context.startActivity(intent);
             }
-        });
+        });*/
 
         if(checkAndRequestPermissions()) {
             saveButton.setEnabled(true);

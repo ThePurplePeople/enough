@@ -11,13 +11,14 @@
     <string name="contact_header">Emergency Contact Information</string>
     <string name="your_name">Your Name</string>
     <string name="select_a_message">Select a Message</string>
-    <string name="message1">I am in danger please contact help.</string>
-    <string name="message2">I am in danger please try to contact me. </string>
-    <string name="message3">I am in danger please contact 911.</string>
+    <string name="message1"><font size="20">I am in danger please contact help.</font></string>
+    <string name="message2"><font size="20">I am in danger please try to contact me. </font></string>
+    <string name="message3"><font size="20">I am in danger please contact 911.</font></string>
     <string name="setUpText">Click to Set Up</string>
     <string name="save">Save</string>
     <string name="location">Share Location</string>
-    <string name="contact1">Tap to select contact 1</string>
-    <string name="contact2">Tap to select contact 2</string>
-    <string name="contact3">Tap to select contact 3</string>
+    <string name="contact1"><font size="20">Tap to select contact 1</font></string>
+    <string name="contact2"><font size="20">Tap to select contact 2</font></string>
+    <string name="contact3"><font size="20">Tap to select contact 3</font></string>
+    <string name="your_message_hint"><font size="20">Your Message Here!</font></string>
 </resources>

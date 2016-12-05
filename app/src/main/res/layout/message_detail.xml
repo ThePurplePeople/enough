@@ -25,8 +25,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="#fff"
+        android:layout_margin="10dp"
+        android:background="@drawable/shape"
         android:elevation="6dp">
 
         <TextView
@@ -39,9 +39,9 @@
     </FrameLayout>
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/frame_layout_height"
-        android:layout_marginTop="10dp"
-        android:background="#fff"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/shape"
         android:elevation="6dp">
 
         <TextView
@@ -55,8 +55,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="#fff"
+        android:layout_margin="10dp"
+        android:background="@drawable/shape"
         android:elevation="6dp">
 
         <TextView
@@ -72,7 +72,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="40dp"
         >
 
         <Button
