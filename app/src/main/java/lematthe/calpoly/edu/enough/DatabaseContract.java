@@ -7,7 +7,7 @@ import android.provider.BaseColumns;
  */
 
 public final class DatabaseContract {
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "contactmessage.db";
     private static final String TEXT_TYPE = " TEXT";
     private static final String BOOL_TYPE = " BOOLEAN";
