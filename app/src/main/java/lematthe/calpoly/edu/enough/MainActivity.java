@@ -51,7 +51,9 @@ public class MainActivity extends AppCompatActivity {
     Button selectM;
     Button saveButton;
     Button locationButton;
+    TextView selectMessage;
     String checkButtonText;
+    TextView emergencyContacts;
     EditText firstName;
     EditText lastName;
     TextView messageEntered;
@@ -69,7 +71,9 @@ public class MainActivity extends AppCompatActivity {
         myContact2 = (Button) findViewById(R.id.contact2);
         myContact3 = (Button) findViewById(R.id.contact3);
         selectM = (Button) findViewById(R.id.selectmessage);
+        emergencyContacts = (TextView) findViewById(R.id.emergencyContactHeader);
         messageEntered = (TextView) findViewById(R.id.message_entered);
+        selectMessage = (TextView) findViewById(R.id.select_message_text);
 
         if (savedInstanceState == null) {
             savedInstanceState = new Bundle();
@@ -184,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!checkRequiredFields()) {
                     Log.d("NOT all fields", "in here");
+
                 }
                 else {
                     //send the original text message
@@ -244,6 +249,21 @@ public class MainActivity extends AppCompatActivity {
             dbHelper.insertUserInfo(firstName.getText().toString(), lastName.getText().toString());
             return true;
         }
+        if (checkContacts.size() == 0) {
+            myContact1.setError("Please enter at least 1 contact");
+        }
+        if (firstName.getText().toString().isEmpty()) {
+            firstName.setError("Please enter your first name");
+        }
+        if (lastName.getText().toString().isEmpty()) {
+            lastName.setError("Please enter your last name");
+        }
+        if (message.isEmpty()) {
+            selectMessage.setError("Please enter or select a message");
+        }
+
+
+
         return false;
     }
 

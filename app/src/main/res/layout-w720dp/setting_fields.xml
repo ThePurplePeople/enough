@@ -9,14 +9,15 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="lematthe.calpoly.edu.enough.MainActivity"
-    android:weightSum="1">
+    android:orientation="horizontal"
+    android:divider="?android:attr/dividerHorizontal"
+    android:showDividers="middle">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.89"
-        android:weightSum="1">
+        android:layout_weight="0.89">
 
         <LinearLayout
             android:orientation="vertical"
@@ -24,12 +25,12 @@
             android:layout_height="wrap_content"
             android:background="@drawable/shape"
             android:elevation="10dp"
-            android:layout_margin="5dp">
+            android:layout_margin="10dp">
             <TextView
                 android:text="@string/your_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="25sp"
+                android:textSize="@dimen/tablet_text_header"
                 android:textColor="@color/colorPrimary"
                 android:id="@+id/textView5" />
             <LinearLayout
@@ -41,12 +42,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="First"
+                    android:textSize="@dimen/tablet_text_small"
                     android:layout_weight="1" />
 
                 <EditText
                     android:id="@+id/lastName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="@dimen/tablet_text_small"
                     android:hint="Last"
                     android:layout_weight="1" />
             </LinearLayout>
@@ -62,7 +65,7 @@
             <TextView
                 android:text="@string/contact_header"
                 android:layout_width="match_parent"
-                android:textSize="25sp"
+                android:textSize="@dimen/tablet_text_header"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimary"
                 android:id="@+id/emergencyContactHeader" />
@@ -72,6 +75,7 @@
                 android:layout_width="match_parent"
                 android:layout_marginBottom="10dp"
                 android:gravity="left"
+                android:textSize="25sp"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView"
                 android:layout_gravity="left" />
@@ -90,6 +94,7 @@
                     android:id="@+id/contact1"
                     android:textColor="@color/colorAccent"
                     android:gravity="left"
+                    android:textSize="@dimen/tablet_text_small"
                     android:drawableBottom="@android:color/black"
                     android:layout_weight="1" />
 
@@ -98,7 +103,9 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                >
 
                 <Button
                     android:text="@string/contact_two"
@@ -106,6 +113,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorAccent"
                     android:id="@+id/contact2"
+                    android:textSize="@dimen/tablet_text_small"
                     android:gravity="left"
                     android:background="@null"
                     android:layout_weight="1" />
@@ -114,7 +122,9 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp">
 
                 <Button
                     android:text="@string/contact_three"
@@ -122,6 +132,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorAccent"
                     android:gravity="left"
+                    android:textSize="@dimen/tablet_text_small"
                     android:background="@null"
                     android:id="@+id/contact3" />
 
@@ -135,18 +146,19 @@
             android:elevation="10dp"
             android:background="@drawable/shape"
             android:orientation="vertical">
+
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                >
+                android:weightSum="1">
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:text="@string/select_a_message"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="25sp"
+                    android:textSize="@dimen/tablet_text_header"
                     android:gravity="center"
                     android:id="@+id/select_message_text"
                     />
@@ -157,21 +169,19 @@
                     android:id="@+id/selectmessage"
                     android:drawableTint="@color/colorAccent"
                     android:background="@android:color/transparent"
-                    android:drawableRight="@android:drawable/ic_dialog_email"
-                    />
+                    android:drawableRight="@android:drawable/ic_dialog_email" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="2.5dp">
+                android:layout_height="wrap_content">
                 <TextView
-                    android:layout_marginLeft="2.5dp"
                     android:layout_width="match_parent"
+                    android:layout_marginBottom="15dp"
                     android:layout_height="wrap_content"
-                    android:hint="@string/your_message_hint"
+                    android:hint="@string/your_message_hint2"
                     android:id="@+id/message_entered"/>
             </LinearLayout>
         </LinearLayout>
@@ -188,11 +198,10 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/ripple_effect"
                 android:text="@string/save"
-                android:textSize="25sp"
+                android:textSize="@dimen/tablet_text_header"
                 android:textColor="@color/white"
                 android:layout_weight="1" />
         </LinearLayout>
-
 
     </LinearLayout>
 
