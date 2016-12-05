@@ -6,8 +6,14 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@drawable/backgroundimage</item>
+        <item name="windowActionBarOverlay">false</item>
+        <item name="actionBarStyle">@style/MyActionBar</item>
     </style>
 
+    <style name ="MyActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:background">@color/transparent</item>
+    </style>
     <style name="ContactButton" parent="@android:style/TextAppearance.Medium">
         <item name="android:gravity">left</item>
         <item name="android:layout_weight">1</item>
