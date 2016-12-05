@@ -182,12 +182,9 @@ public class EnoughHeartWidget extends AppWidgetProvider implements LocationList
             Location location = getLocation(context);
             DatabaseHelper dbHelper = new DatabaseHelper(context);
             ArrayList<String> numbers = dbHelper.getNumbers();
-            String message = dbHelper.getMessage();
-            String location_message = "Location: http://maps.google.com/?q=" + location.getLatitude() + "," + location.getLongitude();
-            Log.d("location: ", location_message);
+            String message = "You have been contacted by " + dbHelper.getFirstName() + " " + dbHelper.getLastName() + " via eNOugh\n" + dbHelper.getMessage() + "\n Location: http://maps.google.com/?q=" + location.getLatitude() + "," + location.getLongitude();
             for (String number : numbers) {
                 sendSMS(context, number, message);
-                sendSMS(context, number, location_message);
             }
         } catch (Exception e) {
             e.printStackTrace();

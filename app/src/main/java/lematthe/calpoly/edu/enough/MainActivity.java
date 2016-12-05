@@ -202,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
                                 + dbHelper.getFirstName().toString() + " " + dbHelper.getLastName().toString() +
                                 "on the application eNOugh. Be aware that in the event of an emergency you will be contacted via text message through this application.";
                         //change to real number just using emulator right now
-                        sendSMS(getApplicationContext(), number, initialMessage);
+                        sendSMS(number, initialMessage);
                         Log.d("send text", "text");
 
                     }
@@ -215,19 +215,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    protected void sendSMS(Context context, String phoneNumber, String message) {
+    protected void sendSMS(String phoneNumber, String message) {
         Log.d("sms sent to", phoneNumber);
-        Intent sentIntent = new Intent(context, getClass());
-        sentIntent.setAction(ACTION_SMS_SENT);
-        PendingIntent sentPI = PendingIntent.getBroadcast(context, 0,
-                sentIntent, 0);
-        Intent deliveredIntent = new Intent(context, getClass());
-        deliveredIntent.setAction(ACTION_SMS_DELIVERED);
-        PendingIntent deliveredPI = PendingIntent.getBroadcast(context, 0,
-                deliveredIntent, 0);
-
         SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
+        sms.sendTextMessage(phoneNumber, null, message, null, null);
     }
 
 
