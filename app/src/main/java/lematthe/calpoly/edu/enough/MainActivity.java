@@ -52,50 +52,25 @@ public class MainActivity extends AppCompatActivity {
     Button myContact1;
     Button myContact2;
     Button myContact3;
-    Button setupbuttoncheck;
     String clickedButton;
     Button selectM;
     Button deleteContact3;
     Button deleteContact2;
     Button deleteContact1;
     Button saveButton;
-    Button locationButton;
     TextView selectMessage;
     String checkButtonText;
     TextView emergencyContacts;
     EditText firstName;
     EditText lastName;
     TextView messageEntered;
-    private boolean mTwoPane;
-
+    boolean changedContact[];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //implicit layout inflator
         dbHelper = new DatabaseHelper(getApplicationContext());
         setContentView(R.layout.setting_fields);
-        // carry on the normal flow, as the case of  permissions  granted.
-        //find contact buttons
-        if (findViewById(R.id.message_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            Log.d("true", "true fragment");
-            mTwoPane = true;
-            Bundle arguments = new Bundle();
-            arguments.putBoolean(MessageDetailFragment.ARG_ITEM_ID, mTwoPane);
-            fragment = new MessageDetailFragment();
-            fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.message_detail_container, fragment, TAG)
-                    .commit();
-        }
-
-        else {
-            Log.d("false", "in here");
-            mTwoPane = false;
-        }
         deleteContact1 = (Button) findViewById(R.id.delete_contact_1);
         deleteContact2 = (Button) findViewById(R.id.delete_contact_2);
         deleteContact3 = (Button) findViewById(R.id.delete_contact_3);
@@ -108,7 +83,16 @@ public class MainActivity extends AppCompatActivity {
         emergencyContacts = (TextView) findViewById(R.id.emergencyContactHeader);
         messageEntered = (TextView) findViewById(R.id.message_entered);
         selectMessage = (TextView) findViewById(R.id.select_message_text);
+        if (savedInstanceState != null) {
+            changedContact = savedInstanceState.getBooleanArray("changed_contacts");
+        }
+        else {
+            changedContact = new boolean[3];
+            for (int i = 0; i < changedContact.length; i++) {
+                changedContact[i] = false;
+            }
 
+        }
 
         //send button here  for now to show functionality
         sendButton = (Button) findViewById(R.id.save);
@@ -177,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 checkButtonText = ((Button) v).getText().toString();
+                changedContact[0] = true;
                 contactClicked();
                 clickedButton = "myContact1";
 
@@ -190,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
         myContact2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                changedContact[1] = true;
                 checkButtonText = ((Button) v).getText().toString();
                 contactClicked();
                 clickedButton = "myContact2";
@@ -204,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
         myContact3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                changedContact[2] = true;
                 checkButtonText = ((Button) v).getText().toString();
                 contactClicked();
                 clickedButton = "myContact3";
@@ -215,18 +202,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if (!mTwoPane) {
-            selectM = (Button) findViewById(R.id.selectmessage);
-            selectM.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Context context = v.getContext();
-                    Intent intent = new Intent(context, MessageDetailActivity.class);
-                    intent.putExtra("hi", "hi");
-                    context.startActivity(intent);
-                }
-            });
-        }
+        selectM = (Button) findViewById(R.id.selectmessage);
+        selectM.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context context = v.getContext();
+                Intent intent = new Intent(context, MessageDetailActivity.class);
+                intent.putExtra("hi", "hi");
+                context.startActivity(intent);
+            }
+        });
 
         if(checkAndRequestPermissions()) {
             saveButton = (Button) findViewById(R.id.save);
@@ -245,23 +230,22 @@ public class MainActivity extends AppCompatActivity {
                     //send the original text message
                     //go to end activity
                     Log.d("all fields are filled", "in here");
-                    if (first_time_saved) {
-                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
-                        alertDialog.setTitle("Widget Is Available");
-                        alertDialog.setMessage("A widget has become available for you to use. In the event of an emergency tap the widget 3 times.");
-                        alertDialog.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Log.d("dialog pressed", "pressed");
-                                sendInitialText();
-                                finish();
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+                    alertDialog.setTitle("Widget Is Available");
+                    alertDialog.setMessage("A widget has become available for you to use. In the event of an emergency tap the widget 3 times.");
+                    alertDialog.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Log.d("dialog pressed", "pressed");
+                            for (int i = 0; i < changedContact.length; i++) {
+                                if (changedContact[i]) {
+                                    sendInitialText(i+1);
+                                }
                             }
-                        });
-                        alertDialog.show();
-                    }
-                    else {
-                        sendInitialText();
-                    }
+                            finish();
+                        }
+                    });
+                    alertDialog.show();
 
                 }
 
@@ -271,17 +255,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void sendInitialText() {
-        ArrayList<String> savedContacts = dbHelper.getContacts();
-        for (int i = 0; i < savedContacts.size(); i += 2) {
-            String name = savedContacts.get(i);
-            String number = savedContacts.get(i + 1);
-            String initialMessage = "Hi " + name + " you have designated as an emergency contact by "
-                    + dbHelper.getFirstName().toString() + " " + dbHelper.getLastName().toString() +
-                    "on the application eNOugh. Be aware that in the event of an emergency you will be contacted via text message through this application.";
-            //change to real number just using emulator right now
-            sendSMS(number, initialMessage);
-            Log.d("send text", "text");
+    public void sendInitialText(final int id) {
+        ArrayList<String> savedContacts = dbHelper.getFullContacts();
+        for (int i = 0; i < savedContacts.size(); i += 3) {
+            String validID = savedContacts.get(i);
+            String name = savedContacts.get(i + 1);
+            String number = savedContacts.get(i + 2);
+            if (Integer.parseInt(validID) == id) {
+                String initialMessage = "Hi " + name + " you have designated as an emergency contact by "
+                        + dbHelper.getFirstName().toString() + " " + dbHelper.getLastName().toString() +
+                        "on the application eNOugh. Be aware that in the event of an emergency you will be contacted via text message through this application.";
+                //change to real number just using emulator right now
+                sendSMS(number, initialMessage);
+                Log.d("sent to id", validID);
+                Log.d("send text", "text");
+            }
         }
     }
 
@@ -543,13 +531,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle state)
     {
-        if (mTwoPane)
-        {
-            getSupportFragmentManager().beginTransaction()
-                    .remove(fragment)
-                    .commit();
-        }
-
+        state.putBooleanArray("changed_contacts", changedContact);
         super.onSaveInstanceState(state);
     }
 
@@ -561,35 +543,10 @@ public class MainActivity extends AppCompatActivity {
             saveButton.setEnabled(true);
         }
         //check if this is the first time this has been opened
-        if (dbHelper.getContacts().size() == 0) {
-            first_time_saved = true;
-        }
-
     }
 
     @Override
     protected void onResume() {
-        if (findViewById(R.id.message_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            Log.d("true", "true fragment");
-            mTwoPane = true;
-            Bundle arguments = new Bundle();
-            arguments.putBoolean(MessageDetailFragment.ARG_ITEM_ID, mTwoPane);
-            fragment = new MessageDetailFragment();
-            fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.message_detail_container, fragment, TAG)
-                    .commit();
-        }
-
-        else {
-            Log.d("false", "in here");
-            mTwoPane = false;
-        }
-
         super.onResume();
 
 //        try {

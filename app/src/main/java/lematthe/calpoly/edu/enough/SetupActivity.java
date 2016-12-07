@@ -47,14 +47,10 @@ public class SetupActivity extends AppCompatActivity {
 
     }
 
-//    @Override
-//    protected onResume() {
-//        if (savedContacts.size() >= 1) {
-//            setupButton.setText("Edit Profile");
-//        }
-//        else {
-//            setupButton.setText("Click to Setup");
-//        }
-//    }
+    @Override
+    protected void onPause() {
+        setupButton.setText("Edit Profile");
+        super.onPause();
+    }
 
 }

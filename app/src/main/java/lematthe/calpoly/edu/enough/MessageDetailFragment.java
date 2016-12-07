@@ -59,10 +59,10 @@ public class MessageDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (getArguments().containsKey(ARG_ITEM_ID)) {
-            twoPane = getArguments().getBoolean(ARG_ITEM_ID);
-            Log.d("argument", String.valueOf(twoPane));
-        }
+//        if (getArguments().containsKey(ARG_ITEM_ID)) {
+//            twoPane = getArguments().getBoolean(ARG_ITEM_ID);
+//            Log.d("argument", String.valueOf(twoPane));
+//        }
 
         View rootView = inflater.inflate(R.layout.message_detail, container, false);
         userMessage = (EditText) rootView.findViewById(R.id.user_message);
@@ -70,22 +70,22 @@ public class MessageDetailFragment extends Fragment {
         if (!message.isEmpty()) {
             userMessage.setText(message);
         }
-        if (twoPane) {
-            save = (Button) rootView.findViewById(R.id.saveButton);
-        }
+//        if (twoPane) {
+//            save = (Button) rootView.findViewById(R.id.saveButton);
+//        }
         message1 = (TextView) rootView.findViewById(R.id.message1);
         message2 = (TextView) rootView.findViewById(R.id.message2);
         message3 = (TextView) rootView.findViewById(R.id.message3);
 
         setPresetMessageClick();
-        if (twoPane) {
-            save.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    saveMessageandFinish();
-                }
-            });
-        }
+//        if (twoPane) {
+//            save.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    saveMessageandFinish();
+//                }
+//            });
+//        }
 
         return rootView;
     }
@@ -93,9 +93,10 @@ public class MessageDetailFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (!twoPane) {
-            inflater.inflate(R.menu.messgage_detail_menu, menu);
-        }
+//        if (!twoPane) {
+//            inflater.inflate(R.menu.messgage_detail_menu, menu);
+//        }
+        inflater.inflate(R.menu.messgage_detail_menu, menu);
         super.onCreateOptionsMenu(menu,inflater);
     }
 
@@ -149,15 +150,16 @@ public class MessageDetailFragment extends Fragment {
         else {
             dbHelper.deleteMessage();
             dbHelper.insertMessage(message_entered);
-            if (!twoPane) {
-                getActivity().finish();
-            }
+//            if (!twoPane) {
+//                getActivity().finish();
+//            }
+            getActivity().finish();
         }
-        if (twoPane) {
-            if (getActivity().getLocalClassName().equals("MainActivity")) {
-                ((MainActivity) getActivity()).messageChanged(message_entered);
-            }
-        }
+//        if (twoPane) {
+//            if (getActivity().getLocalClassName().equals("MainActivity")) {
+//                ((MainActivity) getActivity()).messageChanged(message_entered);
+//            }
+//        }
 
     }
 

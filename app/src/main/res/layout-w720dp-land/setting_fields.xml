@@ -11,6 +11,14 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="lematthe.calpoly.edu.enough.MainActivity">
 
+   <ImageView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_weight="3"
+       android:layout_gravity="center"
+       android:src="@drawable/white_heart"
+       android:layout_marginRight="60dp"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,11 +30,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.89"
             android:layout_marginRight="25dp">
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:src="@drawable/white_heart"
-                android:layout_margin="@dimen/table_margin"/>
+
 
             <LinearLayout
                 android:orientation="vertical"
@@ -39,7 +43,7 @@
                     android:text="@string/your_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="25sp"
+                    android:textSize="@dimen/tablet_text_header2"
                     android:textColor="@color/colorPrimary"
                     android:id="@+id/textView5" />
                 <LinearLayout
@@ -51,10 +55,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="First"
+                        android:textSize="@dimen/tablet_text_small2"
                         android:layout_weight="1" />
 
                     <EditText
                         android:id="@+id/lastName"
+                        android:textSize="@dimen/tablet_text_small2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Last"
@@ -72,7 +78,7 @@
                 <TextView
                     android:text="@string/contact_header"
                     android:layout_width="match_parent"
-                    android:textSize="25sp"
+                    android:textSize="@dimen/tablet_text_header2"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimary"
                     android:id="@+id/emergencyContactHeader" />
@@ -81,6 +87,7 @@
                     android:text="@string/contact_info"
                     android:layout_width="match_parent"
                     android:layout_marginBottom="10dp"
+                    android:textSize="@dimen/tablet_text_small2"
                     android:gravity="left"
                     android:layout_height="wrap_content"
                     android:id="@+id/textView"
@@ -98,6 +105,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:id="@+id/contact1"
+                        android:textSize="@dimen/tablet_text_small2"
                         android:textColor="@color/colorAccent"
                         android:gravity="left"
                         android:drawableBottom="@android:color/black"
@@ -105,6 +113,7 @@
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="@dimen/tablet_text_small2"
                         android:id="@+id/delete_contact_1"
                         android:gravity="center"
                         android:text="delete"
@@ -126,6 +135,7 @@
                         android:textColor="@color/colorAccent"
                         android:id="@+id/contact2"
                         android:gravity="left"
+                        android:textSize="@dimen/tablet_text_small2"
                         android:background="@null"
                         android:layout_weight="1" />
                     <Button
@@ -134,6 +144,7 @@
                         android:id="@+id/delete_contact_2"
                         android:gravity="center"
                         android:text="delete"
+                        android:textSize="@dimen/tablet_text_small2"
                         android:background="@android:color/transparent"
                         android:visibility="invisible"
                         />
@@ -150,6 +161,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorAccent"
                         android:gravity="left"
+                        android:textSize="@dimen/tablet_text_small2"
                         android:layout_weight="1"
                         android:background="@null"
                         android:id="@+id/contact3" />
@@ -157,6 +169,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/delete_contact_3"
+                        android:textSize="@dimen/tablet_text_small2"
                         android:gravity="center"
                         android:text="delete"
                         android:background="@android:color/transparent"
@@ -182,11 +195,20 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="Your Message"
+                        android:text="@string/select_a_message"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="25sp"
+                        android:textSize="@dimen/tablet_text_header2"
                         android:gravity="center"
                         android:id="@+id/select_message_text"
+                        />
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/selectmessage"
+                        android:textSize="@dimen/tablet_text_small2"
+                        android:drawableTint="@color/colorAccent"
+                        android:background="@android:color/transparent"
+                        android:drawableRight="@android:drawable/ic_dialog_email"
                         />
 
                 </LinearLayout>
@@ -200,6 +222,7 @@
                         android:layout_marginLeft="2.5dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textSize="@dimen/tablet_text_small2"
                         android:hint="@string/your_message_hint"
                         android:id="@+id/message_entered"/>
                 </LinearLayout>
@@ -217,16 +240,11 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/ripple_effect"
                     android:text="@string/save"
-                    android:textSize="25sp"
+                    android:textSize="@dimen/tablet_text_small2"
                     android:textColor="@color/white"
                     android:layout_weight="1" />
             </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1.5"
-        android:id="@+id/message_detail_container"/>
 </LinearLayout>
