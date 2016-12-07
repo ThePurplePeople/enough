@@ -46,14 +46,18 @@ public class MainActivity extends AppCompatActivity {
     public String[] newContactNames = new String[3];
     public String[] newContactNumbers = new String[3];
 
-    boolean setup_done = false;
+    boolean first_time_saved = false;
     String TAG = "here";
     Button sendButton;
     Button myContact1;
     Button myContact2;
     Button myContact3;
+    Button setupbuttoncheck;
     String clickedButton;
     Button selectM;
+    Button deleteContact3;
+    Button deleteContact2;
+    Button deleteContact1;
     Button saveButton;
     Button locationButton;
     TextView selectMessage;
@@ -68,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //implicit layout inflator
+        dbHelper = new DatabaseHelper(getApplicationContext());
         setContentView(R.layout.setting_fields);
-
         // carry on the normal flow, as the case of  permissions  granted.
         //find contact buttons
         if (findViewById(R.id.message_detail_container) != null) {
@@ -92,6 +96,12 @@ public class MainActivity extends AppCompatActivity {
             Log.d("false", "in here");
             mTwoPane = false;
         }
+        deleteContact1 = (Button) findViewById(R.id.delete_contact_1);
+        deleteContact2 = (Button) findViewById(R.id.delete_contact_2);
+        deleteContact3 = (Button) findViewById(R.id.delete_contact_3);
+        deleteContact1.setEnabled(false);
+        deleteContact2.setEnabled(false);
+        deleteContact3.setEnabled(false);
         myContact1 = (Button) findViewById(R.id.contact1);
         myContact2 = (Button) findViewById(R.id.contact2);
         myContact3 = (Button) findViewById(R.id.contact3);
@@ -99,14 +109,10 @@ public class MainActivity extends AppCompatActivity {
         messageEntered = (TextView) findViewById(R.id.message_entered);
         selectMessage = (TextView) findViewById(R.id.select_message_text);
 
-        if (savedInstanceState == null) {
-            savedInstanceState = new Bundle();
-        }
 
         //send button here  for now to show functionality
         sendButton = (Button) findViewById(R.id.save);
 
-        dbHelper = new DatabaseHelper(getApplicationContext());
         saveButton = (Button) findViewById(R.id.save);
 
         firstName = (EditText) findViewById(R.id.firstName);
@@ -123,14 +129,20 @@ public class MainActivity extends AppCompatActivity {
                 if (i == 0) {
                     Button b = (Button) findViewById(R.id.contact1);
                     b.setText(name + "         " + number);
+                    deleteContact1.setVisibility(View.VISIBLE);
+                    deleteContact1.setEnabled(true);
                 }
                 if (i == 2) {
                     Button b = (Button) findViewById(R.id.contact2);
                     b.setText(name + "         " + number);
+                    deleteContact2.setVisibility(View.VISIBLE);
+                    deleteContact2.setEnabled(true);
                 }
                 if (i == 4) {
                     Button b = (Button) findViewById(R.id.contact3);
                     b.setText(name + "         " + number);
+                    deleteContact3.setVisibility(View.VISIBLE);
+                    deleteContact3.setEnabled(true);
                 }
             }
         }
@@ -141,12 +153,35 @@ public class MainActivity extends AppCompatActivity {
             myContact3.setText(R.string.contact3);
         }
 
+        deleteContact1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteContact(1);
+            }
+        });
+
+        deleteContact2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteContact(2);
+            }
+        });
+
+        deleteContact3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteContact(3);
+            }
+        });
+
+
         myContact1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 checkButtonText = ((Button) v).getText().toString();
                 contactClicked();
                 clickedButton = "myContact1";
+
                 try {
                     newContactNames[0] = "";
                     newContactNumbers[0] = "";
@@ -195,16 +230,6 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-        /*locationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Context context = v.getContext();
-                Intent intent = new Intent(context, MapsActivity.class);
-                //intent.putExtra("", "");
-                context.startActivity(intent);
-            }
-        });*/
-
         if(checkAndRequestPermissions()) {
             saveButton = (Button) findViewById(R.id.save);
             saveButton.setEnabled(true);
@@ -222,29 +247,23 @@ public class MainActivity extends AppCompatActivity {
                     //send the original text message
                     //go to end activity
                     Log.d("all fields are filled", "in here");
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
-                    alertDialog.setTitle("Widget Is Available");
-                    alertDialog.setMessage("A widget has become available for you to use. In the event of an emergency tap the widget 3 times.");
-                    alertDialog.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Log.d("dialog pressed","pressed");
-                            ArrayList<String> savedContacts = dbHelper.getContacts();
-                            for (int i = 0; i < savedContacts.size(); i += 2) {
-                                String name = savedContacts.get(i);
-                                String number = savedContacts.get(i + 1);
-                                String initialMessage = "Hi " + name + " you have designated as an emergency contact by "
-                                        + dbHelper.getFirstName().toString() + " " + dbHelper.getLastName().toString() +
-                                        "on the application eNOugh. Be aware that in the event of an emergency you will be contacted via text message through this application.";
-                                //change to real number just using emulator right now
-                                sendSMS(number, initialMessage);
-                                Log.d("send text", "text");
-
+                    if (first_time_saved) {
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+                        alertDialog.setTitle("Widget Is Available");
+                        alertDialog.setMessage("A widget has become available for you to use. In the event of an emergency tap the widget 3 times.");
+                        alertDialog.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.d("dialog pressed", "pressed");
+                                sendInitialText();
+                                finish();
                             }
-                            finish();
-                        }
-                    });
-                    alertDialog.show();
+                        });
+                        alertDialog.show();
+                    }
+                    else {
+                        sendInitialText();
+                    }
 
                 }
 
@@ -254,11 +273,64 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void sendInitialText() {
+        ArrayList<String> savedContacts = dbHelper.getContacts();
+        for (int i = 0; i < savedContacts.size(); i += 2) {
+            String name = savedContacts.get(i);
+            String number = savedContacts.get(i + 1);
+            String initialMessage = "Hi " + name + " you have designated as an emergency contact by "
+                    + dbHelper.getFirstName().toString() + " " + dbHelper.getLastName().toString() +
+                    "on the application eNOugh. Be aware that in the event of an emergency you will be contacted via text message through this application.";
+            //change to real number just using emulator right now
+            sendSMS(number, initialMessage);
+            Log.d("send text", "text");
+        }
+    }
 
     protected void sendSMS(String phoneNumber, String message) {
         Log.d("sms sent to", phoneNumber);
         SmsManager sms = SmsManager.getDefault();
         sms.sendTextMessage(phoneNumber, null, message, null, null);
+    }
+
+    public void deleteContact(final int id) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+        alertDialog.setMessage("Are you sure that you want to delete this contact?");
+        alertDialog.setTitle("Delete Contact")
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                Log.d("delete", "delete this contact");
+                                dbHelper.deleteContact(id);
+                                if (id == 1) {
+                                    myContact1.setText(R.string.contact1);
+                                    deleteContact1.setEnabled(false);
+                                    deleteContact1.setVisibility(View.INVISIBLE);
+
+                                }
+                                else if(id == 2) {
+                                    myContact2.setText(R.string.contact2);
+                                    deleteContact2.setEnabled(false);
+                                    deleteContact2.setVisibility(View.INVISIBLE);
+                                }
+                                else {
+                                    myContact3.setText(R.string.contact3);
+                                    deleteContact3.setEnabled(false);
+                                    deleteContact3.setVisibility(View.INVISIBLE);
+                                }
+
+                            }
+                        }
+                )
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                Log.d("dont delete", "here");
+                                dialog.dismiss();
+                            }
+                        }
+                );
+        alertDialog.show();
     }
 
 
@@ -289,8 +361,6 @@ public class MainActivity extends AppCompatActivity {
         if (message.isEmpty()) {
             selectMessage.setError("Please enter or select a message");
         }
-
-
 
         return false;
     }
@@ -375,12 +445,18 @@ public class MainActivity extends AppCompatActivity {
             }
             if (clickedButton.equalsIgnoreCase("myContact1")) {
                 myB = (Button) findViewById(R.id.contact1);
+                deleteContact1.setEnabled(true);
+                deleteContact1.setVisibility(View.VISIBLE);
             }
             else if(clickedButton.equalsIgnoreCase("myContact2")) {
                 myB = (Button) findViewById(R.id.contact2);
+                deleteContact2.setEnabled(true);
+                deleteContact2.setVisibility(View.VISIBLE);
             }
             else if(clickedButton.equalsIgnoreCase("myContact3")) {
                 myB = (Button) findViewById(R.id.contact3);
+                deleteContact3.setEnabled(true);
+                deleteContact3.setVisibility(View.VISIBLE);
             }
             //set the button to contact name
             myB.setText(name + "         " + number);
@@ -485,6 +561,10 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         if(checkAndRequestPermissions()) {
             saveButton.setEnabled(true);
+        }
+        //check if this is the first time this has been opened
+        if (dbHelper.getContacts().size() == 0) {
+            first_time_saved = true;
         }
 
     }

@@ -82,11 +82,11 @@
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="10dp"
                     android:layout_height="wrap_content">
 
                     <Button
-                        android:text="@string/contact"
+                        android:text="@string/contact1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@null"
@@ -95,6 +95,15 @@
                         android:gravity="left"
                         android:drawableBottom="@android:color/black"
                         android:layout_weight="1" />
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/delete_contact_1"
+                        android:gravity="center"
+                        android:text="delete"
+                        android:background="@android:color/transparent"
+                        android:visibility="invisible"
+                        />
 
                 </LinearLayout>
 
@@ -104,7 +113,7 @@
                     android:layout_height="wrap_content">
 
                     <Button
-                        android:text="@string/contact_two"
+                        android:text="@string/contact2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorAccent"
@@ -112,6 +121,15 @@
                         android:gravity="left"
                         android:background="@null"
                         android:layout_weight="1" />
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/delete_contact_2"
+                        android:gravity="center"
+                        android:text="delete"
+                        android:background="@android:color/transparent"
+                        android:visibility="invisible"
+                        />
                 </LinearLayout>
 
                 <LinearLayout
@@ -120,13 +138,23 @@
                     android:layout_height="wrap_content">
 
                     <Button
-                        android:text="@string/contact_three"
+                        android:text="@string/contact3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorAccent"
                         android:gravity="left"
                         android:background="@null"
+                        android:layout_weight="1"
                         android:id="@+id/contact3" />
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/delete_contact_3"
+                        android:gravity="center"
+                        android:text="delete"
+                        android:background="@android:color/transparent"
+                        android:visibility="invisible"
+                        />
 
                 </LinearLayout>
             </LinearLayout>
