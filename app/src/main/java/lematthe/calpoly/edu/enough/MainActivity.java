@@ -119,26 +119,25 @@ public class MainActivity extends AppCompatActivity {
         lastName = (EditText) findViewById(R.id.lastName);
 
 
-        ArrayList<String> savedContacts = dbHelper.getContacts();
+        ArrayList<String> savedContacts = dbHelper.getFullContacts();
         if (savedContacts.size() > 0) {
-            Log.d("size", String.valueOf(savedContacts.size()));
-            for (int i = 0; i < savedContacts.size(); i += 2) {
-                String name = savedContacts.get(i);
-                String number = savedContacts.get(i + 1);
-
-                if (i == 0) {
+            for (int i = 0; i < savedContacts.size(); i += 3) {
+                String id = savedContacts.get(i);
+                String name = savedContacts.get(i + 1);
+                String number = savedContacts.get(i + 2);
+                if (id.equals("1")) {
                     Button b = (Button) findViewById(R.id.contact1);
                     b.setText(name + "         " + number);
                     deleteContact1.setVisibility(View.VISIBLE);
                     deleteContact1.setEnabled(true);
                 }
-                if (i == 2) {
+                if (id.equals("2")) {
                     Button b = (Button) findViewById(R.id.contact2);
                     b.setText(name + "         " + number);
                     deleteContact2.setVisibility(View.VISIBLE);
                     deleteContact2.setEnabled(true);
                 }
-                if (i == 4) {
+                if (id.equals("3")) {
                     Button b = (Button) findViewById(R.id.contact3);
                     b.setText(name + "         " + number);
                     deleteContact3.setVisibility(View.VISIBLE);
@@ -147,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         else {
-            Log.d("here", "small");
             myContact1.setText(R.string.contact1);
             myContact2.setText(R.string.contact2);
             myContact3.setText(R.string.contact3);

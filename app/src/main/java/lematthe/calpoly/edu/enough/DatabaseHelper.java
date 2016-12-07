@@ -321,6 +321,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return contacts;
     }
 
+    public ArrayList<String> getFullContacts() {
+        SQLiteDatabase db = getReadableDatabase();
+        String select = "SELECT _ID, name, number FROM EmergencyContacts";
+
+        ArrayList<String> contacts = new ArrayList<String>();
+
+        try {
+            Cursor cursor = db.rawQuery(select, null);
+            try {
+
+                // looping through all rows and adding to list
+                if (cursor.moveToFirst()) {
+                    do {
+                        contacts.add(cursor.getString(0));
+                        contacts.add(cursor.getString(1));
+                        contacts.add(cursor.getString(2));
+                    } while (cursor.moveToNext());
+                }
+
+            } finally {
+                try { cursor.close(); } catch (Exception ignore) {}
+            }
+        } finally {
+            try { db.close(); } catch (Exception ignore) {}
+        }
+
+        return contacts;
+    }
+
+
+
 
 
 }
