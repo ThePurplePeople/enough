@@ -157,8 +157,8 @@
                         android:id="@+id/selectmessage"
                         android:drawableTint="@color/colorAccent"
                         android:background="@android:color/transparent"
-                        android:drawableRight="@android:drawable/ic_menu_edit"
-                        />
+                        android:drawableRight="@android:drawable/ic_dialog_email"
+                        />>
 
                 </LinearLayout>
 
@@ -190,7 +190,6 @@
                     android:textSize="25sp"
                     android:textColor="@color/white"
                     android:layout_weight="1" />
-
             </LinearLayout>
 
 

@@ -20,6 +20,7 @@
     <string name="contact1"><font size="20">Tap to select contact 1</font></string>
     <string name="contact2"><font size="20">Tap to select contact 2</font></string>
     <string name="contact3"><font size="20">Tap to select contact 3</font></string>
+    <string name="tablet_hint_message"><font size="30">Type a message or select from below</font></string>
     <string name="your_message_hint"><font size="20">Your Message Here!</font></string>
     <string name="your_message_hint2"><font size="25">Your Message Here!</font></string>
 

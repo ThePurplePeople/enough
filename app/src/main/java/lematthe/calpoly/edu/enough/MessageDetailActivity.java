@@ -40,7 +40,11 @@ public class MessageDetailActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
+            Log.d("setting arguments", "here");
+            Bundle arguments = new Bundle();
+            arguments.putBoolean(MessageDetailFragment.ARG_ITEM_ID, false);
             fragment = new MessageDetailFragment();
+            fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction().add(R.id.message_frag_container, fragment).commit();
 
         }
@@ -54,5 +58,7 @@ public class MessageDetailActivity extends AppCompatActivity {
         }
         return true;
     }
+
+
 
 }

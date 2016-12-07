@@ -16,6 +16,8 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:id="@+id/whiteHeart"
+        android:layout_weight="1"
+
         android:layout_gravity="center"
         android:src="@drawable/white_heart"/>
 
@@ -25,6 +27,8 @@
         android:layout_gravity="center"
         android:background="@android:color/transparent"
         android:textStyle="italic"
+        android:layout_weight="1"
+        android:textSize="20sp"
         android:id="@+id/setupButton"
         android:textColor="@color/white"
         android:text="@string/setUpText"/>

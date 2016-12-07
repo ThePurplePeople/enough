@@ -4,34 +4,47 @@
     android:layout_height="match_parent"
     android:weightSum="1"
     >
-
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:src="@drawable/mail1"
+        android:layout_margin="@dimen/tablet_message_margin_tb"/>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/tablet_message_margin_tb"
+        android:layout_marginLeft="@dimen/tablet_message_margin_lr"
+        android:layout_marginRight="@dimen/tablet_message_margin_lr"
+        android:paddingBottom="@dimen/activity_vertical_margin">
 
         <EditText
             android:layout_width="match_parent"
             android:id="@+id/user_message"
-            android:layout_height="@dimen/edittext_horizontal_height"
+            android:layout_height="@dimen/tablet_edit_message_height"
             android:hint="Type a message or select from below"
             android:textColor="@color/white"
+            android:textSize="@dimen/tablet_text_small"
+            android:background="@drawable/edit_text_tablet"
             android:textColorHint="@color/white"
-            android:layout_margin="5dp"
             android:gravity="top"/>"
+
     </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_marginLeft="@dimen/tablet_message_margin_lr"
+        android:layout_marginRight="@dimen/tablet_message_margin_lr"
+        android:layout_marginBottom="@dimen/tablet_message_margin_tb"
         android:background="@drawable/shape"
         android:elevation="6dp">
 
         <TextView
             android:text="@string/message1"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/frame_layout_height_horizontal"
+            android:textSize="@dimen/tablet_text_small"
+            android:layout_height="@dimen/frame_layout_height"
             android:gravity="center"
             android:id="@+id/message1"
             android:layout_weight="1" />
@@ -39,14 +52,16 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="@drawable/shape"
+        android:layout_marginLeft="@dimen/tablet_message_margin_lr"
+        android:layout_marginRight="@dimen/tablet_message_margin_lr"
+        android:layout_marginBottom="@dimen/tablet_message_margin_tb"        android:background="@drawable/shape"
         android:elevation="6dp">
 
         <TextView
             android:text="@string/message2"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/frame_layout_height_horizontal"
+            android:textSize="@dimen/tablet_text_small"
+            android:layout_height="@dimen/frame_layout_height"
             android:gravity="center"
             android:id="@+id/message2"
             android:layout_weight="1" />
@@ -54,15 +69,17 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="@drawable/shape"
+        android:layout_marginLeft="@dimen/tablet_message_margin_lr"
+        android:layout_marginRight="@dimen/tablet_message_margin_lr"
+        android:layout_marginBottom="@dimen/tablet_message_margin_tb"        android:background="@drawable/shape"
         android:elevation="6dp">
 
         <TextView
             android:text="@string/message3"
+            android:textSize="@dimen/tablet_text_small"
             android:layout_width="match_parent"
             android:gravity="center"
-            android:layout_height="@dimen/frame_layout_height_horizontal"
+            android:layout_height="@dimen/frame_layout_height"
             android:id="@+id/message3"
             android:layout_weight="1" />
     </FrameLayout>

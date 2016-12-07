@@ -23,8 +23,6 @@ public class SetupActivity extends AppCompatActivity {
         setContentView(R.layout.click_to_setup);
 
         setupButton = (Button) findViewById(R.id.setupButton);
-//        setupButton.setTextColor(0xffffff);
-//        setupButton.setText("Hello");
 
         DatabaseHelper dbHelper = new DatabaseHelper(getApplicationContext());
         ArrayList<String> savedContacts = dbHelper.getContacts();
@@ -48,5 +46,15 @@ public class SetupActivity extends AppCompatActivity {
         });
 
     }
+
+//    @Override
+//    protected onResume() {
+//        if (savedContacts.size() >= 1) {
+//            setupButton.setText("Edit Profile");
+//        }
+//        else {
+//            setupButton.setText("Click to Setup");
+//        }
+//    }
 
 }

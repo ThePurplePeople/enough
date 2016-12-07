@@ -1,8 +1,12 @@
 package lematthe.calpoly.edu.enough;
 
 import android.Manifest;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.res.Configuration;
 import android.widget.GridLayout.LayoutParams;
 import android.app.PendingIntent;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,7 +16,6 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
@@ -20,6 +23,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
@@ -36,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     public static String ACTION_SMS_SENT = "ActionSMSSent";
     public static String ACTION_SMS_DELIVERED = "ActionSMSDelivered";
     public final int LOCATION_PERM = 2;
+    private MessageDetailFragment fragment;
 
     // Using two arrays because we need predictable indexing and unchanging sizes
     public String[] newContactNames = new String[3];
@@ -57,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     EditText firstName;
     EditText lastName;
     TextView messageEntered;
+    private boolean mTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,11 +72,29 @@ public class MainActivity extends AppCompatActivity {
 
         // carry on the normal flow, as the case of  permissions  granted.
         //find contact buttons
+        if (findViewById(R.id.message_detail_container) != null) {
+            // The detail container view will be present only in the
+            // large-screen layouts (res/values-w900dp).
+            // If this view is present, then the
+            // activity should be in two-pane mode.
+            Log.d("true", "true fragment");
+            mTwoPane = true;
+            Bundle arguments = new Bundle();
+            arguments.putBoolean(MessageDetailFragment.ARG_ITEM_ID, mTwoPane);
+            fragment = new MessageDetailFragment();
+            fragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.message_detail_container, fragment, TAG)
+                    .commit();
+        }
 
+        else {
+            Log.d("false", "in here");
+            mTwoPane = false;
+        }
         myContact1 = (Button) findViewById(R.id.contact1);
         myContact2 = (Button) findViewById(R.id.contact2);
         myContact3 = (Button) findViewById(R.id.contact3);
-        selectM = (Button) findViewById(R.id.selectmessage);
         emergencyContacts = (TextView) findViewById(R.id.emergencyContactHeader);
         messageEntered = (TextView) findViewById(R.id.message_entered);
         selectMessage = (TextView) findViewById(R.id.select_message_text);
@@ -158,15 +182,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        selectM.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Context context = v.getContext();
-                Intent intent = new Intent(context, MessageDetailActivity.class);
-                intent.putExtra("hi", "hi");
-                context.startActivity(intent);
-            }
-        });
+        if (!mTwoPane) {
+            selectM = (Button) findViewById(R.id.selectmessage);
+            selectM.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Context context = v.getContext();
+                    Intent intent = new Intent(context, MessageDetailActivity.class);
+                    intent.putExtra("hi", "hi");
+                    context.startActivity(intent);
+                }
+            });
+        }
 
         /*locationButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
         });*/
 
         if(checkAndRequestPermissions()) {
+            saveButton = (Button) findViewById(R.id.save);
             saveButton.setEnabled(true);
         }
 
@@ -194,19 +222,29 @@ public class MainActivity extends AppCompatActivity {
                     //send the original text message
                     //go to end activity
                     Log.d("all fields are filled", "in here");
-                    ArrayList<String> savedContacts = dbHelper.getContacts();
-                    for (int i = 0; i < savedContacts.size(); i += 2) {
-                        String name = savedContacts.get(i);
-                        String number = savedContacts.get(i + 1);
-                        String initialMessage = "Hi " + name + " you have designated as an emergency contact by "
-                                + dbHelper.getFirstName().toString() + " " + dbHelper.getLastName().toString() +
-                                "on the application eNOugh. Be aware that in the event of an emergency you will be contacted via text message through this application.";
-                        //change to real number just using emulator right now
-                        sendSMS(number, initialMessage);
-                        Log.d("send text", "text");
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+                    alertDialog.setTitle("Widget Is Available");
+                    alertDialog.setMessage("A widget has become available for you to use. In the event of an emergency tap the widget 3 times.");
+                    alertDialog.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Log.d("dialog pressed","pressed");
+                            ArrayList<String> savedContacts = dbHelper.getContacts();
+                            for (int i = 0; i < savedContacts.size(); i += 2) {
+                                String name = savedContacts.get(i);
+                                String number = savedContacts.get(i + 1);
+                                String initialMessage = "Hi " + name + " you have designated as an emergency contact by "
+                                        + dbHelper.getFirstName().toString() + " " + dbHelper.getLastName().toString() +
+                                        "on the application eNOugh. Be aware that in the event of an emergency you will be contacted via text message through this application.";
+                                //change to real number just using emulator right now
+                                sendSMS(number, initialMessage);
+                                Log.d("send text", "text");
 
-                    }
-                    finish();
+                            }
+                            finish();
+                        }
+                    });
+                    alertDialog.show();
 
                 }
 
@@ -214,6 +252,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+
 
     protected void sendSMS(String phoneNumber, String message) {
         Log.d("sms sent to", phoneNumber);
@@ -427,6 +467,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle state)
+    {
+        if (mTwoPane)
+        {
+            getSupportFragmentManager().beginTransaction()
+                    .remove(fragment)
+                    .commit();
+        }
+
+        super.onSaveInstanceState(state);
+    }
+
+
+    @Override
     protected void onStart() {
         super.onStart();
         if(checkAndRequestPermissions()) {
@@ -437,6 +491,27 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        if (findViewById(R.id.message_detail_container) != null) {
+            // The detail container view will be present only in the
+            // large-screen layouts (res/values-w900dp).
+            // If this view is present, then the
+            // activity should be in two-pane mode.
+            Log.d("true", "true fragment");
+            mTwoPane = true;
+            Bundle arguments = new Bundle();
+            arguments.putBoolean(MessageDetailFragment.ARG_ITEM_ID, mTwoPane);
+            fragment = new MessageDetailFragment();
+            fragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.message_detail_container, fragment, TAG)
+                    .commit();
+        }
+
+        else {
+            Log.d("false", "in here");
+            mTwoPane = false;
+        }
+
         super.onResume();
 
 //        try {
@@ -460,6 +535,16 @@ public class MainActivity extends AppCompatActivity {
         dbHelper.insertUserInfo(firstName.getText().toString(), lastName.getText().toString());
     }
 
+    public void messageChanged(String message) {
+        if (!dbHelper.getMessage().isEmpty()) {
+            messageEntered.setText(message);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
 
 }
 

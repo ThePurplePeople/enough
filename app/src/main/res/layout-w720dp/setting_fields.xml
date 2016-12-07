@@ -13,19 +13,26 @@
     android:divider="?android:attr/dividerHorizontal"
     android:showDividers="middle">
 
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.89">
-
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/white_heart"
+            android:layout_margin="@dimen/table_margin"/>
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/shape"
             android:elevation="10dp"
-            android:layout_margin="10dp">
+            android:layout_margin="@dimen/table_margin">
             <TextView
                 android:text="@string/your_name"
                 android:layout_width="match_parent"
@@ -60,7 +67,9 @@
             android:orientation="vertical"
             android:elevation="10dp"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_marginBottom="@dimen/table_margin"
+            android:layout_marginLeft="@dimen/table_margin"
+            android:layout_marginRight="@dimen/table_margin"
             android:background="@drawable/shape">
             <TextView
                 android:text="@string/contact_header"
@@ -142,7 +151,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_marginBottom="@dimen/table_margin"
+            android:layout_marginLeft="@dimen/table_margin"
+            android:layout_marginRight="@dimen/table_margin"
             android:elevation="10dp"
             android:background="@drawable/shape"
             android:orientation="vertical">
@@ -181,6 +192,7 @@
                     android:layout_width="match_parent"
                     android:layout_marginBottom="15dp"
                     android:layout_height="wrap_content"
+                    android:textSize="@dimen/tablet_text_small"
                     android:hint="@string/your_message_hint2"
                     android:id="@+id/message_entered"/>
             </LinearLayout>
@@ -204,5 +216,6 @@
         </LinearLayout>
 
     </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

@@ -8,6 +8,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight=".25"
         android:layout_gravity="center"
         android:id="@+id/enough_header"
         android:src="@drawable/header"/>
@@ -16,6 +17,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:id="@+id/whiteHeart"
+        android:layout_weight="1"
         android:layout_gravity="center"
         android:src="@drawable/white_heart"/>
 
@@ -23,9 +25,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@android:color/transparent"
         android:textStyle="italic"
+        android:textSize="20sp"
+        android:layout_weight="1"
         android:textColor="@android:color/white"
         android:id="@+id/setupButton"
+        android:background="@drawable/ripple_effect"
         android:text="@string/setUpText"/>
 </LinearLayout>
